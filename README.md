@@ -1,0 +1,1 @@
+# plugins-license-manager-for-woocommerce
