@@ -3,7 +3,7 @@ Contributors: wpexpertsio
 Tags: license key, license, key, software license, serial key, manager, woocommerce, wordpress
 Requires at least: 4.7
 Tested up to: 6.6
-Stable tag: 3.0.8
+Stable tag: 3.0.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,7 +46,6 @@ License Manager for WooCommerce Pro allows you to enhance the capabilities for y
 * **Ping Request** - Create a ping request to check the client-server connection.
 * **New License Key Upon Subscription renewal** - Issue a new license key upon each subscription renewal.
 * **Extend License Key Upon Subscription** - Extend the existing license key with each subscription renewal.
-
 View License Manager for WooCommerce Pro [pricing plans](https://www.licensemanager.at/pricing/).
 
 #### API
@@ -112,9 +111,7 @@ Of course! The plugin comes with REST API routes which allow you to activate, de
 
 = Does this License Management plugin work with subscription products? =
 
-Yes, our license manager plugin supports subscription products and is compatible with the WooCommerce Subscriptions plugin.
-
-== Screenshots ==
+Yes, our license manager plugin supports subscription products and is compatible with the WooCommerce Subscriptions plugin.== Screenshots ==
 
 1. What's New
 2. The license key overview page.
@@ -131,6 +128,9 @@ Yes, our license manager plugin supports subscription products and is compatible
 [See changelog for all versions](https://raw.githubusercontent.com/wpexpertsio/license-manager-woocommerce/main/CHANGELOG.md).
 
 == Upgrade Notice ==
+= 3.0.8 =
+- Bug Fixes & Improvements
+
 = 3.0.8 =
 - Improved - Enhanced handling of sensitive data.
 
