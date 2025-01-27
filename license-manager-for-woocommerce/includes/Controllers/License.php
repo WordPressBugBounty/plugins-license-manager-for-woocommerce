@@ -201,6 +201,12 @@ class License
             wp_redirect(sprintf('admin.php?page=%s&action=add', AdminMenus::LICENSES_PAGE));
             exit;
         }
+          // empty license key
+          if(empty($_POST['license_key'])){
+            AdminNotice::error(__('The license key field is empty.', 'license-manager-for-woocommerce'));
+            wp_redirect(sprintf('admin.php?page=%s&action=add', AdminMenus::LICENSES_PAGE));
+            exit;
+        };
 
         /** @var LicenseResourceModel $license */
         $license = LicenseResourceRepository::instance()->insert(
@@ -290,6 +296,12 @@ class License
             wp_redirect(sprintf('admin.php?page=%s&action=edit&id=%d', AdminMenus::LICENSES_PAGE, $licenseId));
             exit;
         }
+         // empty license key
+         if(empty($_POST['license_key'])){
+            AdminNotice::error(__('The license key field is empty.', 'license-manager-for-woocommerce'));
+            wp_redirect(sprintf('admin.php?page=%s&action=add', AdminMenus::LICENSES_PAGE));
+            exit;
+        };
 
         // Update the stock
         if ($oldLicense->getProductId() !== null && $oldLicense->getStatus() === LicenseStatusEnum::ACTIVE) {

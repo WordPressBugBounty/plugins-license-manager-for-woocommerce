@@ -547,7 +547,7 @@ class ActivationsList extends WP_List_Table {
 
 		// All link
 		$class              = $current == 'all' ? ' class="current"' : '';
-		$allUrl             = remove_query_arg( 'status' );
+		$allUrl             = esc_url( remove_query_arg( 'status' ) ); 
 		$statusLinks['all'] = sprintf(
 			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
 			$allUrl,

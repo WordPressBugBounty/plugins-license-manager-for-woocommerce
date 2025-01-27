@@ -19,6 +19,7 @@ class Export
     {
         add_action('lmfwc_export_license_keys_pdf', array($this, 'exportLicenseKeysPdf'), 10, 1);
         add_action('lmfwc_export_license_keys_csv', array($this, 'exportLicenseKeysCsv'), 10, 1);
+        add_action('lmfwc_export_license_keys_by_date_csv', array($this, 'exportLicenseKeysCsv'), 10, 1);
      
     }
 
@@ -95,8 +96,7 @@ class Export
      *
      * @param array $licenseKeyIds
      */
-    public function exportLicenseKeysCsv($licenseKeyIds)
-    {
+    public function exportLicenseKeysCsv($licenseKeyIds){
         $licenseKeys = array();
 
         // Should no columns be defined, we will export all of them

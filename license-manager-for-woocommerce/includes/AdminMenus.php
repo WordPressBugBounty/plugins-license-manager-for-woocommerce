@@ -27,9 +27,9 @@ class AdminMenus
     private $tabWhitelist;
 
     /**
-     * Woocommerce page slug.
-     */
-    const WOOCOMMERCE_PAGE = 'woocommerce';
+	 * Product page slug.
+	 */
+	const PRODUCT_PAGE = 'edit.php?post_type=product';
 
     /**
      * Licenses page slug.
@@ -124,7 +124,7 @@ class AdminMenus
     {
 
         $licensesHook = add_submenu_page(
-            self::WOOCOMMERCE_PAGE,
+            self::PRODUCT_PAGE,
             esc_html__('License Keys', 'license-manager-for-woocommerce'),
             esc_html__('License Keys', 'license-manager-for-woocommerce'),
             'manage_options',
@@ -135,7 +135,7 @@ class AdminMenus
 
         // Generators List Page
         $generatorsHook = add_submenu_page(
-            self::WOOCOMMERCE_PAGE,
+            self::PRODUCT_PAGE,
             esc_html__('Generators', 'license-manager-for-woocommerce'),
             esc_html__('Generators', 'license-manager-for-woocommerce'),
             'manage_options',
@@ -145,7 +145,7 @@ class AdminMenus
         add_action('load-' . $generatorsHook, array($this, 'generatorsPageScreenOptions'));
 
         $activationsHook = add_submenu_page(
-            self::WOOCOMMERCE_PAGE,
+            self::PRODUCT_PAGE,
             esc_html__('Activations', 'license-manager-for-woocommerce'),
             esc_html__('Activations', 'license-manager-for-woocommerce'),
             'manage_options',

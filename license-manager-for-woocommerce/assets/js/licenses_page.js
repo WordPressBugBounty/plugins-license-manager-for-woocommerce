@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropdownOrders   = jQuery('select#filter-by-order-id');
     const dropdownProducts = jQuery('select#filter-by-product-id');
     const dropdownUsers    = jQuery('select#filter-by-user-id');
+    
+    jQuery('#export_by_date_form').submit(function(){
+        jQuery('#export_date_error').remove();
+    });
 
     const productDropdownSearchConfig = {
         ajax: {

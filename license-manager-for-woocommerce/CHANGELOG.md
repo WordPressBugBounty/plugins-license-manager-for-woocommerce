@@ -1,3 +1,9 @@
+##### 3.0.11 - 2025-01-02
+- Improved - Change menus position under Products
+
+##### 3.0.10 - 2024-12-05
+- Improved - Minor bug fixes and improvements
+
 ##### 3.0.9 - 2024-11-12
 - Improved - Minor bug fixes and improvements
 

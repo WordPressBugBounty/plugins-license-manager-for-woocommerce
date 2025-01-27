@@ -29,7 +29,7 @@ defined('ABSPATH') || exit;
         <tr scope="row">
             <th scope="row"><label for="edit__license_key"><?php esc_html_e('License key', 'license-manager-for-woocommerce');?></label></th>
             <td>
-                <input name="license_key" id="edit__license_key" class="regular-text" type="text" value="<?php echo esc_attr($licenseKey); ?>">
+                <input name="license_key" id="edit__license_key"  required class="regular-text" type="text" value="<?php echo esc_attr($licenseKey); ?>">
                 <p class="description"><?php esc_html_e('The license key will be encrypted before it is stored inside the database.', 'license-manager-for-woocommerce');?></p>
             </td>
         </tr>

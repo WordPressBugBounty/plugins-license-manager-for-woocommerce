@@ -87,7 +87,7 @@ class LicensesList extends WP_List_Table
 
         // All link
         $class = $current == 'all' ? ' class="current"' :'';
-        $allUrl = remove_query_arg('status');
+        $allUrl = esc_url(remove_query_arg('status'));
         $statusLinks['all'] = sprintf(
             '<a href="%s" %s>%s <span class="count">(%d)</span></a>',
             $allUrl,
@@ -791,7 +791,8 @@ class LicensesList extends WP_List_Table
             'export_pdf'        => __('Export (PDF)', 'license-manager-for-woocommerce')
         );
 
-        return $actions;
+    return apply_filters('license_List_bulk_actions', $actions);
+
     }
 
     /**
@@ -821,6 +822,9 @@ class LicensesList extends WP_List_Table
                 break;
             case 'export_csv':
                 $this->exportLicenseKeys('CSV');
+                break;
+            case 'export_csv_date':
+                $this->redirectToExportByDate('CSV');
                 break;
             default:
                 break;
@@ -1137,6 +1141,11 @@ class LicensesList extends WP_List_Table
             $this->verifyNonce('export_csv');
             do_action('lmfwc_export_license_keys_csv', (array)$_REQUEST['id']);
         }
+    }
+    
+    private function redirectToExportByDate() {
+
+        wp_redirect( admin_url('admin.php?page=lmfwc_licenses&action=export_date&_wpnonce=' . wp_create_nonce('exportDate')));
     }
 
     /**

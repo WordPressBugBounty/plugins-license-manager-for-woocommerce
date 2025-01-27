@@ -111,7 +111,8 @@ final class Main extends Singleton
         );
 
         $current_screen = get_current_screen();
-        if ( $hook === 'woocommerce_page_lmfwc_licenses' || $current_screen->id === 'shop_order' || $current_screen->id === 'woocommerce_page_wc-orders' ) {
+
+        if ( $hook === 'product_page_lmfwc_licenses' || $current_screen->id === 'shop_order' || $current_screen->id === 'woocommerce_page_wc-orders' ) {
             // JavaScript
             wp_enqueue_script(
                 'lmfwc_admin_js',
@@ -142,7 +143,7 @@ final class Main extends Singleton
             $extra_css = 'p.submit:not(.wrap.lmfwc p.submit){display:none;}';
             wp_add_inline_style('lmfwc_admin_css', $extra_css);
         }
-        if ($hook === 'woocommerce_page_lmfwc_licenses' || $hook === 'woocommerce_page_lmfwc_generators' || $hook === 'woocommerce_page_lmfwc_activations' || ( $hook === 'woocommerce_page_wc-settings' && isset( $_GET['tab'] ) && $_GET['tab'] === 'lmfwc_settings' ) ) {
+        if ($hook === 'product_page_lmfwc_licenses' || $hook === 'product_page_lmfwc_generators' || $hook === 'product_page_lmfwc_activations' || ( $hook === 'woocommerce_page_wc-settings' && isset( $_GET['tab'] ) && $_GET['tab'] === 'lmfwc_settings' ) ) {
             wp_enqueue_script('lmfwc_select2_cdn');
             wp_enqueue_style('lmfwc_select2_cdn');
             wp_enqueue_style('lmfwc_select2');
@@ -150,7 +151,7 @@ final class Main extends Singleton
         }
 
         // Licenses page
-        if ($hook === 'woocommerce_page_lmfwc_licenses') {
+        if ($hook === 'product_page_lmfwc_licenses') {
             wp_enqueue_script('lmfwc_licenses_page_js', LMFWC_JS_URL . 'licenses_page.js');
 
             wp_localize_script(
@@ -173,7 +174,7 @@ final class Main extends Singleton
         }
 
         // Generators page
-        if ($hook === 'woocommerce_page_lmfwc_generators') {
+        if ($hook === 'product_page_lmfwc_generators') {
             wp_enqueue_script('lmfwc_generators_page_js', LMFWC_JS_URL . 'generators_page.js');
 
             wp_localize_script(
@@ -196,7 +197,7 @@ final class Main extends Singleton
 
 
         // Activations page
-        if ($hook === 'woocommerce_page_lmfwc_activations') {
+        if ($hook === 'product_page_lmfwc_activations') {
             wp_enqueue_script('lmfwc_activations_page_js', LMFWC_JS_URL . 'activations_page.js');
 
             wp_localize_script(
