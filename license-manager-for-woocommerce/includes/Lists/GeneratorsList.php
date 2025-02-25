@@ -104,6 +104,7 @@ class GeneratorsList extends WP_List_Table
      */
     public function column_name($item)
     {
+      
         $products = apply_filters('lmfwc_get_assigned_products', $item['id']);
         $actions  = array();
         $title    = '<strong>' . $item['name'] . '</strong>';
@@ -123,25 +124,34 @@ class GeneratorsList extends WP_List_Table
         );
         
         if (!apply_filters('lmfwc_get_assigned_products', $item['id'])) {
-            $actions['delete'] = sprintf(
-                '<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">%s</a>',
-                AdminMenus::GENERATORS_PAGE,
-                'delete',
-                absint($item['id']),
-                wp_create_nonce('delete'),
-                __('Delete', 'license-manager-for-woocommerce')
-            );
-        }
-
-        $actions['edit'] = sprintf(
-            '<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">%s</a>',
-            AdminMenus::GENERATORS_PAGE,
-            'edit',
-            absint($item['id']),
-            wp_create_nonce('edit'),
-            __('Edit', 'license-manager-for-woocommerce')
-        );
-
+			$actions['delete'] = sprintf(
+			'<a href="%s">%s</a>',
+			admin_url(
+				sprintf(
+					'%s&page=%s&action=delete&id=%d&_wpnonce=%s', AdminMenus::PRODUCT_PAGE,
+					AdminMenus::GENERATORS_PAGE,
+					intval($item['id']),
+					wp_create_nonce('delete')
+				)
+			),
+			__('Delete', 'license-manager-for-woocommerce')
+		);
+		}
+		// Edit
+		$actions['edit'] = sprintf(
+			'<a href="%s">%s</a>',
+			admin_url(
+				wp_nonce_url(
+					sprintf(
+						'%s&page=%s&action=edit&id=%d', AdminMenus::PRODUCT_PAGE,
+						AdminMenus::GENERATORS_PAGE,
+						intval($item['id'])
+					),
+					'edit'
+				)
+			),
+			__('Edit', 'license-manager-for-woocommerce')
+		);
         return $title . $this->row_actions($actions);
     }
 
@@ -355,82 +365,80 @@ class GeneratorsList extends WP_List_Table
      *
      * @throws Exception
      */
-    private function verifyNonce($nonceAction)
-    {
-        if (!wp_verify_nonce($_REQUEST['_wpnonce'], $nonceAction) &&
-            !wp_verify_nonce($_REQUEST['_wpnonce'], 'bulk-' . $this->_args['plural'])
-        ) {
-            AdminNotice::error(__('The nonce is invalid or has expired.', 'license-manager-for-woocommerce'));
-            wp_redirect(admin_url(sprintf('admin.php?page=%s', AdminMenus::GENERATORS_PAGE)));
+    private function verifyNonce( $nonceAction ) {
+		$data = $_REQUEST;
+		if (!wp_verify_nonce($data['_wpnonce'], $nonceAction) &&
+			!wp_verify_nonce($data['_wpnonce'], 'bulk-' . $this->_args['plural'])
+		) {
+			AdminNotice::error(__('The nonce is invalid or has expired.', 'license-manager-for-woocommerce'));
+			wp_redirect(admin_url(sprintf('%s&page=%s', AdminMenus::PRODUCT_PAGE, AdminMenus::GENERATORS_PAGE)));
 
-            exit();
-        }
-    }
-
+			exit();
+		}
+	}
     /**
      * Makes sure that generators were selected for the bulk action.
      */
-    private function verifySelection()
-    {
-        // No ID's were selected, show a warning and redirect
-        if (!array_key_exists('id', $_REQUEST)) {
-            $message = sprintf(esc_html__('No generators were selected.', 'license-manager-for-woocommerce'));
-            AdminNotice::warning($message);
+    private function verifySelection() {
+		// No ID's were selected, show a warning and redirect
+		if (!array_key_exists('id', $_REQUEST)) {
+			$message = sprintf(esc_html__('No generators were selected.', 'license-manager-for-woocommerce'));
+			AdminNotice::warning($message);
 
-            wp_redirect(
-                admin_url(
-                    sprintf('admin.php?page=%s', AdminMenus::GENERATORS_PAGE)
-                )
-            );
+			wp_redirect(
+				admin_url(
+					sprintf('%s&page=%s', AdminMenus::PRODUCT_PAGE, AdminMenus::GENERATORS_PAGE)
+				)
+			);
 
-            exit();
-        }
-    }
+			exit();
+		}
+	}
 
     /**
      * Bulk deletes the generators from the table by a single ID or an array of ID's.
      *
      * @throws Exception
      */
-    private function deleteGenerators()
-    {
-        $selectedGenerators = (array)$_REQUEST['id'];
-        $generatorsToDelete = array();
+    private function deleteGenerators() {
+		$data = $_REQUEST;
+		$selectedGenerators = (array) $data['id'];
+		$generatorsToDelete = array();
 
-        foreach ($selectedGenerators as $generatorId) {
-            if ($products = apply_filters('lmfwc_get_assigned_products', $generatorId)) {
-                continue;
-            } else {
-                array_push($generatorsToDelete, $generatorId);
-            }
-        }
+		foreach ($selectedGenerators as $generatorId) {
+			/**
+			* Filter lmfwc_get_assigned_products
+			* 
+			* @since 1.0
+			**/
+			$products = apply_filters('lmfwc_get_assigned_products', $generatorId);
+			if ( $products ) {
+				continue;
+			} else {
+				array_push($generatorsToDelete, $generatorId);
+			}
+		}
 
-        $result = GeneratorResourceRepository::instance()->delete($generatorsToDelete);
+		$result = GeneratorResourceRepository::instance()->delete($generatorsToDelete);
 
-        if ($result) {
-            AdminNotice::success(
-                sprintf(
-                    /* translators: %d is the number of generators deleted */
-                    __('%d generator(s) permanently deleted.', 'license-manager-for-woocommerce'),
-                    intval($result)
-                )
-            );
-            
-            wp_redirect(
-                admin_url(
-                    sprintf('admin.php?page=%s', AdminMenus::GENERATORS_PAGE)
-                )
-            );
-        }
+		if ($result) {
+			AdminNotice::success(sprintf(
+				/* translators: %s is the number of generator */
+				__('%d generator(s) permanently deleted.', 'license-manager-for-woocommerce'), $result));
 
-        else {
-            AdminNotice::error(__('There was a problem deleting the generators.', 'license-manager-for-woocommerce'));
+			wp_redirect(
+				admin_url(
+					sprintf('%s&page=%s', AdminMenus::PRODUCT_PAGE, AdminMenus::GENERATORS_PAGE)
+				)
+			);
+		} else {
+			AdminNotice::error(__('There was a problem deleting the generators.', 'license-manager-for-woocommerce'));
 
-            wp_redirect(
-                admin_url(
-                    sprintf('admin.php?page=%s', AdminMenus::GENERATORS_PAGE)
-                )
-            );
-        }
-    }
+			wp_redirect(
+				admin_url(
+					sprintf('%s&page=%s', AdminMenus::PRODUCT_PAGE, AdminMenus::GENERATORS_PAGE)
+				)
+			);
+		}
+	}
 }

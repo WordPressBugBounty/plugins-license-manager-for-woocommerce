@@ -3,14 +3,14 @@ Contributors: wpexpertsio
 Tags: license key, license, key, software license, serial key, manager, woocommerce, wordpress
 Requires at least: 4.7
 Tested up to: 6.7
-Stable tag: 3.0.10
+Stable tag: 3.0.11
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Easily sell and manage software license keys through your WooCommerce shop
 
 == Description ==
-The **License Manager for WooCommerce** allows you to easily sell and manage all of your digital license keys. With features like the bulk importer, automatic delivery, automatic stock management, and database encryption, your shop will now run easier than ever.
+The **[License Manager for WooCommerce](https://licensemanager.at/)** allows you to easily sell and manage all of your digital license keys. With features like the bulk importer, automatic delivery, automatic stock management, and database encryption, your shop will now run easier than ever.
 
 [Plugin & API Documentation](https://www.licensemanager.at/docs)
 
@@ -124,6 +124,9 @@ Yes, our license manager plugin supports subscription products and is compatible
 8. REST API
 
 == Changelog ==
+
+##### 3.0.11 - 2025-02-25
+- Fixed - Generators edited options.
 
 ##### 3.0.10 - 2025-01-27
 - Improved - Change menus position under WooCommerce Products
@@ -363,6 +366,10 @@ Yes, our license manager plugin supports subscription products and is compatible
 - Initial release.
 
 == Upgrade Notice ==
+
+= 3.0.11 =
+- Fixed - Generators edited options.
+
 = 3.0.10 =
 - Bug Fixes & Improvements
 

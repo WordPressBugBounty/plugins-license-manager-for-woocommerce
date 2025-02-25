@@ -4,6 +4,7 @@ use LicenseManagerForWooCommerce\Models\Resources\Generator as GeneratorResource
 
 defined('ABSPATH') || exit;
 
+
 /** @var GeneratorResourceModel $generator */
 
 ?>

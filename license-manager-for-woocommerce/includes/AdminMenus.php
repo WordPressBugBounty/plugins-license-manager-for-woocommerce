@@ -111,8 +111,8 @@ class AdminMenus
     public function getPluginPageIDs()
     {
         return array(
-            'woocommerce_page_lmfwc_licenses',
-            'woocommerce_page_lmfwc_generators',
+            'product_page_lmfwc_licenses',
+            'product_page_lmfwc_generators',
             'woocommerce_page_lmfwc_settings'
         );
     }
@@ -135,14 +135,14 @@ class AdminMenus
 
         // Generators List Page
         $generatorsHook = add_submenu_page(
-            self::PRODUCT_PAGE,
-            esc_html__('Generators', 'license-manager-for-woocommerce'),
-            esc_html__('Generators', 'license-manager-for-woocommerce'),
-            'manage_options',
-            self::GENERATORS_PAGE,
-            array($this, 'generatorsPage')
-        );
-        add_action('load-' . $generatorsHook, array($this, 'generatorsPageScreenOptions'));
+			self::PRODUCT_PAGE,
+			__('Generators', 'license-manager-for-woocommerce'),
+			__('Generators', 'license-manager-for-woocommerce'),
+			'manage_options',
+			self::GENERATORS_PAGE,
+			array( $this, 'generatorsPage' )
+		);
+		add_action('load-' . $generatorsHook, array( $this, 'generatorsPageScreenOptions' ));
 
         $activationsHook = add_submenu_page(
             self::PRODUCT_PAGE,
@@ -216,120 +216,130 @@ class AdminMenus
 
         $this->activations = new ActivationsList;
     }
+/**
+	 * Sets up the license page.
+	 */
+    public function licensesPage() {
+		$lmfwc_data = $_REQUEST;
+		$default = 'list';
+		$action = $this->getCurrentAction($default);
+		$licenses = $this->licenses;
+		$addLicenseUrl = admin_url(
+			sprintf(
+				'%s&page=%s&action=add&_wpnonce=%s', self::PRODUCT_PAGE,
+				self::LICENSES_PAGE,
+				wp_create_nonce('add')
+			)
+		);
+		$importLicenseUrl = admin_url(
+			sprintf(
+				'%s&page=%s&action=import&_wpnonce=%s', self::PRODUCT_PAGE,
+				self::LICENSES_PAGE,
+				wp_create_nonce('import')
+			)
+		);
 
-    /**
-     * Sets up the licenses page.
-     */
-    public function licensesPage()
-    {
-        $action   = $this->getCurrentAction($default = 'list');
-        $licenses = $this->licenses;
-        $addLicenseUrl = admin_url(
-            sprintf(
-                'admin.php?page=%s&action=add&_wpnonce=%s',
-                self::LICENSES_PAGE,
-                wp_create_nonce('add')
-            )
-        );
-        $importLicenseUrl = admin_url(
-            sprintf(
-                'admin.php?page=%s&action=import&_wpnonce=%s',
-                self::LICENSES_PAGE,
-                wp_create_nonce('import')
-            )
-        );
+		// Edit license keys
+		if ( 'edit' === $action ) {
+			if (!current_user_can('manage_options')) {
+				wp_die(esc_html__('Insufficient permission', 'license-manager-for-woocommerce'));
+			}
 
-        // Edit license keys
-        if ($action === 'edit') {
-            if (!current_user_can('manage_options')) {
-                wp_die(esc_html__('Insufficient permission', 'license-manager-for-woocommerce'));
-            }
+			/**
+			 *  LicenseResourceRepository find license
+			 * 
+			 * @var LicenseResourceRepository $license 
+			**/
+			$license = LicenseResourceRepository::instance()->find(absint($lmfwc_data['id']));
+			$expiresAt = null;
 
-            /** @var LicenseResourceModel $license */
-            $license = LicenseResourceRepository::instance()->find(absint($_GET['id']));
-            $expiresAt = null;
+			if ($license->getExpiresAt()) {
+				try {
+					$expiresAtDateTime = new \DateTime($license->getExpiresAt());
+					$expiresAt = $expiresAtDateTime->format('Y-m-d');
+				} catch (\Exception $e) {
+					$expiresAt = null;
+				}
+			}
 
-            if ($license->getExpiresAt()) {
-                try {
-                    $expiresAtDateTime = new \DateTime($license->getExpiresAt());
-                    $expiresAt = $expiresAtDateTime->format('Y-m-d');
-                } catch (\Exception $e) {
-                    $expiresAt = null;
-                }
-            }
+			if (!$license) {
+				wp_die(esc_html__('Invalid license key ID', 'license-manager-for-woocommerce'));
+			}
 
-            if (!$license) {
-                wp_die(esc_html__('Invalid license key ID', 'license-manager-for-woocommerce'));
-            }
+			$licenseKey = $license->getDecryptedLicenseKey();
+		}
 
-            $licenseKey = $license->getDecryptedLicenseKey();
-        }
+		// Edit, add or import license keys
+		if ( 'edit' === $action   || 'add' === $action   || 'import'  === $action ) {
+			wp_enqueue_style('lmfwc-jquery-ui-datepicker');
+			wp_enqueue_script('jquery-ui-datepicker');
+			$statusOptions = LicenseStatus::dropdown();
+		}
 
-        // Edit, add or import license keys
-        if ($action === 'edit' || $action === 'add' || $action === 'import') {
-            wp_enqueue_style('lmfwc-jquery-ui-datepicker');
-            wp_enqueue_script('jquery-ui-datepicker');
-            $statusOptions = LicenseStatus::dropdown();
-        }
+		include LMFWC_TEMPLATES_DIR . 'page-licenses.php';
+	}
 
-        include LMFWC_TEMPLATES_DIR . 'page-licenses.php';
-    }
+	/**
+	 * Sets up the generators page.
+	 */
+	public function generatorsPage() {
+		$lmfwc_data = $_REQUEST;
+		$generators = $this->generators;
+		$default = 'list';
+		$action = $this->getCurrentAction($default);
 
-    /**
-     * Sets up the generators page.
-     */
-    public function generatorsPage()
-    {
-        $generators = $this->generators;
-        $action     = $this->getCurrentAction($default = 'list');
+		// List generators
+		if ( 'list' === $action || 'delete'  === $action ) {
+			$addGeneratorUrl = wp_nonce_url(
+				sprintf(
+					admin_url('%s&page=%s&action=add'), self::PRODUCT_PAGE,
+					self::GENERATORS_PAGE
+				),
+				'lmfwc_add_generator'
+			);
+			$generateKeysUrl = wp_nonce_url(
+				sprintf(
+					admin_url('%s&page=%s&action=generate'), self::PRODUCT_PAGE,
+					self::GENERATORS_PAGE
+				),
+				'lmfwc_generate_keys'
+			);
+		}
 
-        // List generators
-        if ($action === 'list' || $action === 'delete') {
-            $addGeneratorUrl = wp_nonce_url(
-                sprintf(
-                    admin_url('admin.php?page=%s&action=add'),
-                    self::GENERATORS_PAGE
-                ),
-                'lmfwc_add_generator'
-            );
-            $generateKeysUrl = wp_nonce_url(
-                sprintf(
-                    admin_url('admin.php?page=%s&action=generate'),
-                    self::GENERATORS_PAGE
-                ),
-                'lmfwc_generate_keys'
-            );
-        }
+		// Edit generators
+		if ( 'edit'  === $action ) {
+			if (!current_user_can('manage_options')) {
+				wp_die(esc_html__('Insufficient permission', 'license-manager-for-woocommerce'));
+			}
 
-        // Edit generators
-        if ($action === 'edit') {
-            if (!current_user_can('manage_options')) {
-                wp_die(esc_html__('Insufficient permission', 'license-manager-for-woocommerce'));
-            }
+			if (!array_key_exists('edit', $lmfwc_data) && !array_key_exists('id', $lmfwc_data)) {
+				return;
+			}
+			$generator = GeneratorResourceRepository::instance()->find($lmfwc_data['id']);
+			if (! $generator) {
+				return;
+			}
+			/**
+			* Filter lmfwc_get_assigned_products
+			* 
+			* @since 1.0
+			**/
+			$products = apply_filters('lmfwc_get_assigned_products', $lmfwc_data['id']);
+		}
 
-            if (!array_key_exists('edit', $_GET) && !array_key_exists('id', $_GET)) {
-                return;
-            }
+		// Generate license keys
+		if ( 'generate' === $action  ) {
+			$generatorsDropdown = GeneratorResourceRepository::instance()->findAll();
+			$statusOptions      = LicenseStatus::dropdown();
 
-            if (!$generator = GeneratorResourceRepository::instance()->find($_GET['id'])) {
-                return;
-            }
+			if (!$generatorsDropdown) {
+				$generatorsDropdown = array();
+			}
+		}
 
-            $products = apply_filters('lmfwc_get_assigned_products', $_GET['id']);
-        }
+		include LMFWC_TEMPLATES_DIR . 'page-generators.php';
+	}
 
-        // Generate license keys
-        if ($action === 'generate') {
-            $generatorsDropdown = GeneratorResourceRepository::instance()->findAll();
-            $statusOptions      = LicenseStatus::dropdown();
-
-            if (!$generatorsDropdown) {
-                $generatorsDropdown = array();
-            }
-        }
-
-        include LMFWC_TEMPLATES_DIR . 'page-generators.php';
-    }
 
     /**
      * Sets up the settings page.
@@ -505,7 +515,7 @@ class AdminMenus
     protected function getCurrentAction($default)
     {
         $action = $default;
-
+        
         if (!isset($_GET['action']) || !is_string($_GET['action'])) {
             return $action;
         }
