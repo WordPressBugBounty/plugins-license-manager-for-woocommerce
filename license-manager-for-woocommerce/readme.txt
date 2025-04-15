@@ -2,8 +2,8 @@
 Contributors: wpexpertsio
 Tags: license key, license, key, software license, serial key, manager, woocommerce, wordpress
 Requires at least: 4.7
-Tested up to: 6.7
-Stable tag: 3.0.11
+Tested up to: 6.8
+Stable tag: 3.0.12
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -124,6 +124,9 @@ Yes, our license manager plugin supports subscription products and is compatible
 8. REST API
 
 == Changelog ==
+
+##### 3.0.12 - 2025-04-15
+- Tweak - Tested Upto WordPress Latest Version 6.8
 
 ##### 3.0.11 - 2025-02-25
 - Fixed - Generators edited options.

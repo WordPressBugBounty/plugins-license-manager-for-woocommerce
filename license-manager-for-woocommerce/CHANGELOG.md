@@ -1,3 +1,6 @@
+##### 3.0.12 - 2025-04-15
+- Tweak - Tested Upto WordPress Latest Version 6.8
+
 ##### 3.0.11 - 2025-01-02
 - Improved - Change menus position under Products
 
