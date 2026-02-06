@@ -122,6 +122,7 @@ class AdminMenus
      */
     public function createPluginPages()
     {
+        
 
         $licensesHook = add_submenu_page(
             self::PRODUCT_PAGE,
@@ -153,6 +154,36 @@ class AdminMenus
             array($this, 'activationsPage')
         );
         add_action('load-' . $activationsHook, array($this, 'activationsPageScreenOptions'));
+
+        // Go Pro Link
+        add_submenu_page(
+            self::PRODUCT_PAGE,
+            esc_html__('Products installed on', 'license-manager-for-woocommerce'),
+            '<span>' . esc_html__('Installed on', 'license-manager-for-woocommerce') . '</span><span class="lmfwc-pro-badge">PRO</span>',
+            'manage_options',
+            'lmfwc_products_installed_on',
+            array($this, 'lmfwc_products_installed_on')
+        );
+        // Go Pro Link
+        add_submenu_page(
+            self::PRODUCT_PAGE,
+            esc_html__('Applications', 'license-manager-for-woocommerce'),
+            '<span>' . esc_html__('Applications', 'license-manager-for-woocommerce') . '</span><span class="lmfwc-pro-badge">PRO</span>',
+            'manage_options',
+            'lmfwc_applications',
+            array($this, 'lmfwc_applications')
+        );
+
+        // Go Pro Link
+        add_submenu_page(
+            self::PRODUCT_PAGE,
+            esc_html__('Upgrade to Pro', 'license-manager-for-woocommerce'),
+            '<span style="color: #6C5DD3; font-weight: bold;">' . esc_html__('Upgrade to Pro', 'license-manager-for-woocommerce') . '</span>',
+            'manage_options',
+            'lmfwc_upgrade_to_pro',
+            array($this, 'goProRedirect')
+        );
+
     }
 
     /**
@@ -521,6 +552,272 @@ class AdminMenus
         }
 
         return sanitize_text_field($_GET['action']);
+    }
+
+    /**
+     * Redirects to the Pro version pricing page.
+     */
+    public function goProRedirect()
+    {
+        ?>
+        <script type="text/javascript">
+            window.location.href = 'https://licensemanager.at/pricing/?utm_source=plugin&utm_medium=menu&utm_campaign=go_pro';
+        </script>
+        <?php
+    }
+
+    /**
+     * Displays the "Products installed on" Pro feature page.
+     */
+    public function lmfwc_products_installed_on()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('Insufficient permission', 'license-manager-for-woocommerce'));
+        }
+
+        ?>
+        <style>
+            .lmfwc-settings-grid { display:flex; gap:30px; align-items:flex-start; }
+            .lmfwc-settings-main { flex:1 1 0; }
+            .lmfwc-sidebar { width:320px; position: sticky; top: 40px; }
+        </style>
+        <div class="wrap lmfwc">
+            <h1><?php esc_html_e('Products installed on', 'license-manager-for-woocommerce'); ?></h1>
+            
+            <div class="lmfwc-settings-grid">
+                <div class="lmfwc-settings-main">
+            <div class="notice notice-info" style="margin: 20px 0;">
+                <p><strong><?php esc_html_e('Important', 'license-manager-for-woocommerce'); ?>:</strong> 
+                <?php esc_html_e('Products will appear here, after they are installed on a customer website. If the license key is empty, the product is not officially registered in the license manager or the ping went wrong.', 'license-manager-for-woocommerce'); ?></p>
+            </div>
+
+            <div class="lmfwc-pro-feature-table-wrapper" style="position: relative;">
+                <table class="wp-list-table widefat fixed striped table-view-list">
+                    <thead>
+                        <tr>
+                            <td class="manage-column column-cb check-column" style="width: 40px;">
+                                <input type="checkbox" disabled>
+                            </td>
+                            <th scope="col" class="manage-column column-product sortable desc" style="width: 200px;">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Product', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-order sortable desc" style="width: 150px;">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Order', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-license-key sortable desc" style="width: 200px;">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('License key', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-installed-on sortable desc" style="width: 150px;">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Installed on', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-last-ping sortable desc" style="width: 150px;">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Last ping', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="the-list">
+                        <tr class="no-items">
+                            <td class="colspanchange" colspan="6" style="text-align: center; padding: 40px;">
+                                
+                                <p style="font-size: 16px; color: #666; margin-bottom: 10px;">
+                                    <strong><?php esc_html_e('This is a Pro Feature', 'license-manager-for-woocommerce'); ?></strong>
+                                </p>
+                                <p style="color: #888; margin-bottom: 20px;">
+                                    <?php esc_html_e('Upgrade to Pro to track products installed on customer websites.', 'license-manager-for-woocommerce'); ?>
+                                </p>
+                            
+                                <center>
+                                <a style="max-width: 50%;" href="https://licensemanager.at/pricing/?utm_source=plugin&utm_medium=products_installed_on&utm_campaign=upgrade" target="_blank" class="shine-button  lmfwc-btn lmfwc-btn-primary lmfwc-btn-block">
+                                <?php esc_html_e('Upgrade to Pro', 'license-manager-for-woocommerce'); ?></a>
+                                </center>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="manage-column column-cb check-column">
+                                <input type="checkbox" disabled>
+                            </td>
+                            <th scope="col" class="manage-column column-product sortable desc">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Product', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-order sortable desc">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Order', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-license-key sortable desc">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('License key', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-installed-on sortable desc">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Installed on', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-last-ping sortable desc">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Last ping', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+                </div>
+
+                <aside class="lmfwc-sidebar">
+                    <?php include_once LMFWC_TEMPLATES_DIR . 'sidebar-pro.php'; ?>
+                </aside>
+            </div>
+        </div>
+        <?php
+    }
+
+    /**
+     * Displays the "Applications" Pro feature page.
+     */
+    public function lmfwc_applications()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('Insufficient permission', 'license-manager-for-woocommerce'));
+        }
+
+        ?>
+        <style>
+            .lmfwc-settings-grid { display:flex; gap:30px; align-items:flex-start; }
+            .lmfwc-settings-main { flex:1 1 0; }
+            .lmfwc-sidebar { width:320px; position: sticky; top: 40px; }
+        </style>
+        <div class="wrap lmfwc">
+            <h1 class="wp-heading-inline"><?php esc_html_e('Applications', 'license-manager-for-woocommerce'); ?></h1>
+            <a href="#" class="page-title-action" style="opacity: 0.5; pointer-events: none; cursor: not-allowed;">
+                <?php esc_html_e('Add new', 'license-manager-for-woocommerce'); ?>
+            </a>
+            <hr class="wp-header-end">
+
+            <div class="lmfwc-settings-grid">
+                <div class="lmfwc-settings-main">
+            <div class="tablenav top">
+                <div class="alignleft actions bulkactions">
+                    <label for="bulk-action-selector-top" class="screen-reader-text"><?php esc_html_e('Select bulk action', 'license-manager-for-woocommerce'); ?></label>
+                    <select name="action" id="bulk-action-selector-top" disabled style="opacity: 0.5;">
+                        <option value="-1"><?php esc_html_e('Bulk actions', 'license-manager-for-woocommerce'); ?></option>
+                    </select>
+                    <input type="submit" id="doaction" class="button action" value="<?php esc_attr_e('Apply', 'license-manager-for-woocommerce'); ?>" disabled style="opacity: 0.5; pointer-events: none;">
+                </div>
+                <div class="alignleft actions"></div>
+                <div class="tablenav-pages one-page">
+                    <span class="displaying-num"><?php esc_html_e('1 item', 'license-manager-for-woocommerce'); ?></span>
+                </div>
+                <br class="clear">
+            </div>
+
+            <div class="lmfwc-pro-feature-table-wrapper" style="position: relative;">
+                <table class="wp-list-table widefat fixed striped table-view-list">
+                    <thead>
+                        <tr>
+                            <td class="manage-column column-cb check-column" style="width: 40px;">
+                                <input type="checkbox" disabled>
+                            </td>
+                            <th scope="col" class="manage-column column-name sortable desc" style="width: 200px;">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Name', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-type sortable desc">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Type', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="the-list">
+                        <tr class="no-items">
+                            <td class="colspanchange" colspan="3" style="text-align: center; padding: 40px;">
+                              
+                                <p style="font-size: 16px; color: #666; margin-bottom: 10px;">
+                                    <strong><?php esc_html_e('This is a Pro Feature', 'license-manager-for-woocommerce'); ?></strong>
+                                </p>
+                                <p style="color: #888; margin-bottom: 20px;">
+                                    <?php esc_html_e('Upgrade to Pro to manage applications and track installations.', 'license-manager-for-woocommerce'); ?>
+                                </p>
+                                <center>
+                                <a style="max-width: 50%;" href="https://licensemanager.at/pricing/?utm_source=plugin&utm_medium=applications&utm_campaign=upgrade" target="_blank" class="shine-button  lmfwc-btn lmfwc-btn-primary lmfwc-btn-block">
+                                <?php esc_html_e('Upgrade to Pro', 'license-manager-for-woocommerce'); ?></a>
+                                </center>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="manage-column column-cb check-column">
+                                <input type="checkbox" disabled>
+                            </td>
+                            <th scope="col" class="manage-column column-name sortable desc">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Name', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                            <th scope="col" class="manage-column column-type sortable desc">
+                                <a href="#" onclick="return false;">
+                                    <span><?php esc_html_e('Type', 'license-manager-for-woocommerce'); ?></span>
+                                    <span class="sorting-indicator"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="tablenav bottom">
+                <div class="alignleft actions bulkactions">
+                    <label for="bulk-action-selector-bottom" class="screen-reader-text"><?php esc_html_e('Select bulk action', 'license-manager-for-woocommerce'); ?></label>
+                    <select name="action2" id="bulk-action-selector-bottom" disabled style="opacity: 0.5;">
+                        <option value="-1"><?php esc_html_e('Bulk actions', 'license-manager-for-woocommerce'); ?></option>
+                    </select>
+                    <input type="submit" id="doaction2" class="button action" value="<?php esc_attr_e('Apply', 'license-manager-for-woocommerce'); ?>" disabled style="opacity: 0.5; pointer-events: none;">
+                </div>
+                <div class="alignleft actions"></div>
+                <div class="tablenav-pages one-page">
+                    <span class="displaying-num"><?php esc_html_e('1 item', 'license-manager-for-woocommerce'); ?></span>
+                </div>
+                <br class="clear">
+            </div>
+                </div>
+
+                <aside class="lmfwc-sidebar">
+                    <?php include_once LMFWC_TEMPLATES_DIR . 'sidebar-pro.php'; ?>
+                </aside>
+            </div>
+        </div>
+        <?php
     }
 
 }

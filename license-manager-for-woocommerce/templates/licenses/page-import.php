@@ -1,8 +1,7 @@
 <?php defined('ABSPATH') || exit; ?>
 
 <h1 class="wp-heading-inline"><?php esc_html_e('Add license keys in bulk', 'license-manager-for-woocommerce'); ?></h1>
-<hr class="wp-header-end">
-
+<hr class="wp-header-end-cus">
 <form method="post" action="<?php echo esc_html(admin_url('admin-post.php')) ;?>" enctype="multipart/form-data">
     <input type="hidden" name="action" value="lmfwc_import_license_keys">
     <?php wp_nonce_field('lmfwc_import_license_keys'); ?>

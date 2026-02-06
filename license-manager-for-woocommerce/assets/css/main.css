@@ -343,3 +343,97 @@ lmfwc-status-active {
 span.lmfwc-txt-copied-to-clipboard {
     display: none;
 }
+.wrap.lmfwc.lmfwc-modern-dashboard {
+    padding: 0 0px !important;
+}
+form#lmfwc-license-table {
+    overflow: scroll;
+    overflow-y: overlay !important;
+}
+
+/* Plugin Menu - Single Unified Block/Badge */
+#adminmenu a[href*="lmfwc_licenses"],
+#adminmenu a[href*="lmfwc_generators"],
+#adminmenu a[href*="lmfwc_activations"],
+#adminmenu a[href*="lmfwc_products_installed_on"],
+#adminmenu a[href*="lmfwc_applications"],
+#adminmenu a[href*="lmfwc_upgrade_to_pro"] {
+    position: relative;
+    margin: 0 2px !important;
+    border-left: 3px solid #6C5DD3 !important;
+    border-right: 3px solid #6C5DD3 !important;
+    transition: all 0.2s ease !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* First item - top rounded corners */
+#adminmenu a[href*="lmfwc_licenses"] {
+    margin-top: 8px !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+/* Last item - bottom rounded corners */
+#adminmenu a[href*="lmfwc_upgrade_to_pro"] {
+    margin-bottom: 8px !important;
+    border-radius: 0 0 8px 8px !important;
+    
+}
+
+/* Middle items - connected with divider */
+#adminmenu a[href*="lmfwc_generators"],
+#adminmenu a[href*="lmfwc_activations"],
+#adminmenu a[href*="lmfwc_products_installed_on"],
+#adminmenu a[href*="lmfwc_applications"] {
+    
+}
+
+/* Active state */
+#adminmenu li.current > a[href*="lmfwc_licenses"],
+#adminmenu li.current > a[href*="lmfwc_generators"],
+#adminmenu li.current > a[href*="lmfwc_activations"],
+#adminmenu li.current > a[href*="lmfwc_products_installed_on"],
+#adminmenu li.current > a[href*="lmfwc_applications"],
+#adminmenu li.current > a[href*="lmfwc_upgrade_to_pro"] {
+    border-right-color: #6C5DD3 !important;
+}
+
+/* Menu separator/label styling */
+#adminmenu .lmfwc-menu-separator {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: #6C5DD3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 12px;
+    margin: 8px 0 4px 0;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+#adminmenu a[href*="lmfwc_menu_separator"] {
+    cursor: default !important;
+    pointer-events: none !important;
+}
+
+#adminmenu a[href*="lmfwc_menu_separator"]:hover {
+    background: transparent !important;
+}
+
+/* Style the PRO badges */
+#adminmenu .lmfwc-pro-badge-small {
+    display: inline-block;
+    background: linear-gradient(135deg, #6C5DD3 0%, #4f8cff 100%);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(108, 93, 211, 0.3);
+    vertical-align: middle;
+    line-height: 1.4;
+}

@@ -180,6 +180,14 @@ class WooSettings
         );
 
         add_settings_field(
+            'lmfwc_terminated_status',
+            __('Terminated Status', 'license-manager-for-woocommerce'),
+            array($this, 'fieldTerminatedStatus'),
+            'lmfwc_license_key_delivery',
+            'license_key_delivery_section'
+        );
+
+        add_settings_field(
             'lmfwc_license_key_delivery_options',
             __('Define license key delivery', 'license-manager-for-woocommerce'),
             array($this, 'fieldLicenseKeyDeliveryOptions'),
@@ -455,6 +463,38 @@ class WooSettings
                 </p>
             </fieldset>
         ';
+
+        echo wp_kses( $html, lmfwc_shapeSpace_allowed_html() );
+    }
+
+    /**
+     * Callback for the "lmfwc_terminated_status" field (Pro feature).
+     *
+     * @return void
+     */
+    public function fieldTerminatedStatus()
+    {
+        $aria = esc_attr__('Upgrade to Pro', 'license-manager-for-woocommerce');
+        $terminated_statuses = array(
+            'cancelled' => __('Cancelled', 'license-manager-for-woocommerce'),
+            'refunded' => __('Refunded', 'license-manager-for-woocommerce'),
+            'failed' => __('Failed', 'license-manager-for-woocommerce'),
+        );
+
+        $html = '<fieldset>';
+        $html .= '<div class="lmfwc-pro-setting" role="button" tabindex="0" aria-label="' . $aria . '">';
+        
+        foreach ($terminated_statuses as $status => $label) {
+            $html .= '<label style="display: block; margin-bottom: 10px;width: 100%;">';
+            $html .= '<input type="checkbox" disabled> ';
+            $html .= '<span>' . esc_html($label) . '</span>';
+            $html .= ' <span class="lmfwc-pro-badge-small">PRO</span>';
+            $html .= '</label>';
+        }
+
+        $html .= '<p class="description">' . esc_html__('Select which order statuses should be considered as terminated. License keys will not be sent for orders with these statuses.', 'license-manager-for-woocommerce') . '</p>';
+        $html .= '</div>';
+        $html .= '</fieldset>';
 
         echo wp_kses( $html, lmfwc_shapeSpace_allowed_html() );
     }

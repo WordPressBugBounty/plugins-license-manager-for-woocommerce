@@ -110,9 +110,17 @@ final class Main extends Singleton
             LMFWC_VERSION
         );
 
+        // Modern Admin CSS
+        wp_enqueue_style(
+            'lmfwc_admin_modern_css',
+            LMFWC_CSS_URL . 'admin-modern.css',
+            array(),
+            LMFWC_VERSION
+        );
+
         $current_screen = get_current_screen();
 
-        if ( $hook === 'product_page_lmfwc_licenses' || $current_screen->id === 'shop_order' || $current_screen->id === 'woocommerce_page_wc-orders' ) {
+            if ( $hook === 'product_page_lmfwc_licenses' || $current_screen->id === 'shop_order' || $current_screen->id === 'woocommerce_page_wc-orders' || $hook === 'settings_page_lmfwc_export' ) {
             // JavaScript
             wp_enqueue_script(
                 'lmfwc_admin_js',
@@ -225,6 +233,7 @@ final class Main extends Singleton
             wp_enqueue_style('lmfwc_select2_cdn');
             wp_enqueue_script('select2');
             wp_enqueue_script('lmfwc_settings_page_js', LMFWC_JS_URL . 'settings_page.js');
+            wp_enqueue_script('lmfwc_admin_pro_teaser_js', LMFWC_JS_URL . 'admin-pro-teaser.js', array('jquery'), LMFWC_VERSION, true);
             wp_localize_script(
                 'lmfwc_settings_page_js',
                 'security',
@@ -272,6 +281,22 @@ final class Main extends Singleton
     }
 
     /**
+     * Add action links to the plugin.
+     *
+     * @param array $actions Array of already present links
+     *
+     * @return array
+     */
+    public function pluginActionLinks($actions)
+    {
+        if ( current_time( 'timestamp' ) < strtotime( '2025-12-10 23:59:59' ) ) {
+            $actions['black_friday'] = '<a href="https://www.licensemanager.at/pricing/?utm_source=plugin&utm_medium=plugins_page_bf" target="_blank" style="color: green; font-weight: bold;">Black Friday Deals</a>';
+        }
+
+        return $actions;
+    }
+
+    /**
      * Hook into actions and filters.
      *
      * @return void
@@ -293,6 +318,7 @@ final class Main extends Singleton
 
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueueScripts'));
         add_filter('plugin_row_meta', array($this, 'pluginRowMeta'), 10, 2);
+        add_filter('plugin_action_links_' . LMFWC_PLUGIN_BASENAME, array($this, 'pluginActionLinks'));
     }
 
     /**

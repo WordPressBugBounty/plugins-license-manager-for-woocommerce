@@ -1,3 +1,9 @@
+##### 3.0.14 - 2025-11-20
+- Tweak - Code improvement 
+
+##### 3.0.13 - 2025-07-23
+- Improved - Enhanced plugin security
+
 ##### 3.0.12 - 2025-04-15
 - Tweak - Tested Upto WordPress Latest Version 6.8
 

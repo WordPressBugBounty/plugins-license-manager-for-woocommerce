@@ -69,24 +69,44 @@ class Tools
             'lmfwc_export',
             'export_section'
         );
-        // Add the settings sections.
-       
-          // lmfwc_export section fields.
-        // add_settings_field(
-        //     'lmfwc_database_migration',
-        //     __('Database Migration', 'license-manager-for-woocommerce'),
-        //     array($this, 'fieldDatabaseMigration'),
-        //     'lmfwc_export',
-        //     'lmfwc_data_tools'
+
+        // --- PRO ONLY FIELDS ---
+        // add_settings_section(
+        //     'pro_tools_section',
+        //     __('Pro Tools', 'license-manager-for-woocommerce'),
+        //     null,
+        //     'lmfwc_export'
         // );
-        //    add_settings_field(
-        //     'lmfwc_past_order_generator',
-        //     __('Past Order Generator', 'license-manager-for-woocommerce'),
-        //     array($this, 'fieldPastOrdersLicenseGenerator'),
+        // add_settings_field(
+        //     'lmfwc_pro_database_migration',
+        //     __('Database Migration', 'license-manager-for-woocommerce'),
+        //     array($this, 'fieldProFeature'),
         //     'lmfwc_export',
-        //     'lmfwc_data_tools'
+        //     'pro_tools_section',
+        //     array('label_for' => 'lmfwc_pro_database_migration', 'desc' => __('Migrate from other license plugins with one click.', 'license-manager-for-woocommerce'))
+        // );
+        // add_settings_field(
+        //     'lmfwc_pro_past_order_generator',
+        //     __('Past Orders License Generator', 'license-manager-for-woocommerce'),
+        //     array($this, 'fieldProFeature'),
+        //     'lmfwc_export',
+        //     'pro_tools_section',
+        //     array('label_for' => 'lmfwc_pro_past_order_generator', 'desc' => __('Generate licenses for all past orders automatically.', 'license-manager-for-woocommerce'))
         // );
     }
+
+        /**
+         * Generic callback for Pro features (disabled field with PRO badge and popup trigger).
+         */
+        public function fieldProFeature($args) {
+            $desc = isset($args['desc']) ? esc_html($args['desc']) : '';
+            $aria = esc_attr__('Upgrade to Pro', 'license-manager-for-woocommerce');
+            $html = '<div class="lmfwc-pro-setting lmfwc-pro-disabled" role="button" tabindex="0" aria-label="' . $aria . '" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">';
+            $html .= '<input type="text" disabled value="' . esc_attr($desc) . '" style="width: 320px; background: #f9f9f9; color: #aaa; border: 1px solid #eee;">';
+            $html .= ' <span class="lmfwc-pro-badge-small" style="background: #ff9800; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">PRO</span>';
+            $html .= '</div>';
+            echo $html;
+        }
     
 
     public function fieldCsvExportColumns()

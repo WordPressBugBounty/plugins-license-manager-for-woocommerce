@@ -12,22 +12,28 @@ defined('ABSPATH') || exit;
 
 ?>
 
-<h1 class="wp-heading-inline"><?php esc_html_e('Generators', 'license-manager-for-woocommerce'); ?></h1>
-<a href="<?php echo esc_url($addGeneratorUrl); ?>" class="page-title-action">
-    <span><?php esc_html_e('Add new', 'license-manager-for-woocommerce');?></span>
-</a>
-<a href="<?php echo esc_url($generateKeysUrl); ?>" class="page-title-action">
-    <span><?php esc_html_e('Generate', 'license-manager-for-woocommerce');?></span>
-</a>
-<p>
-    <b><?php esc_html_e('Important', 'license-manager-for-woocommerce');?>:</b>
-    <span><?php esc_html_e('You can not delete generators which are still assigned to active products! To delete those, please remove the generator from all of its assigned products first.', 'license-manager-for-woocommerce');?></span>
-</p>
-<hr class="wp-header-end">
+<div class="lmfwc-card">
+    <div class="lmfwc-card-header">
+        <h2 class="lmfwc-card-title"><?php esc_html_e('Generators', 'license-manager-for-woocommerce'); ?></h2>
+        <div class="lmfwc-header-actions">
+            <a href="<?php echo esc_url($addGeneratorUrl); ?>" class="lmfwc-btn lmfwc-btn-primary">
+                <?php esc_html_e('Add new', 'license-manager-for-woocommerce');?>
+            </a>
+            <a href="<?php echo esc_url($generateKeysUrl); ?>" class="lmfwc-btn lmfwc-btn-secondary">
+                <?php esc_html_e('Generate', 'license-manager-for-woocommerce');?>
+            </a>
+        </div>
+    </div>
 
-<form method="post">
-    <?php
-        $generators->prepare_items();
-        $generators->display();
-    ?>
-</form>
+    <p>
+        <b><?php esc_html_e('Important', 'license-manager-for-woocommerce');?>:</b>
+        <span><?php esc_html_e('You can not delete generators which are still assigned to active products! To delete those, please remove the generator from all of its assigned products first.', 'license-manager-for-woocommerce');?></span>
+    </p>
+
+    <form method="post">
+        <?php
+            $generators->prepare_items();
+            $generators->display();
+        ?>
+    </form>
+</div>

@@ -644,25 +644,19 @@ class Controller extends AbstractIntegrationController implements IntegrationCon
     {
         global $wpdb;
 
-        $sql ="
-            SELECT
-                DISTINCT (posts.ID)
-            FROM
-                $wpdb->posts as posts
-            INNER JOIN
-                $wpdb->postmeta as meta
-                    ON 1=1
-                    AND posts.ID = meta.post_id
-            WHERE
-                1=1
-                AND posts.post_title LIKE '%$term%'
-                AND (posts.post_type = 'product' OR posts.post_type = 'product_variation')
-            ORDER BY posts.ID DESC
-            LIMIT $limit
-            OFFSET $offset
-        ";
-
-        return $wpdb->get_col($sql);
+		return $wpdb->get_col( $wpdb->prepare(
+			"SELECT DISTINCT(posts.ID)
+	        FROM {$wpdb->posts} AS posts
+	        INNER JOIN {$wpdb->postmeta} AS meta ON posts.ID = meta.post_id
+	        WHERE 1=1
+	        AND (posts.post_title LIKE %s OR meta.meta_value LIKE %s)
+	        AND (posts.post_type = 'product' OR posts.post_type = 'product_variation')
+	        ORDER BY posts.ID DESC LIMIT %d OFFSET %d",
+			'%' . $wpdb->esc_like( $term ) . '%',
+			'%' . $wpdb->esc_like( $term ) . '%',
+			$limit,
+			$offset
+		) );
     }
 
     private function searchGenerators($term, $limit, $offset) {

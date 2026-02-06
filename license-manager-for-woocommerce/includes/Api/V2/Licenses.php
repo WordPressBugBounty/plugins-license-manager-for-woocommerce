@@ -85,6 +85,32 @@ class Licenses extends LMFWC_REST_Controller
                 )
             )
         );
+        // custom client requirement api
+        register_rest_route(
+            $this->namespace, $this->rest_base . '/order' , array(
+                array(
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => array($this, 'getLicensesOrderRelated'),
+                    'permission_callback' => array($this, 'permissionCallback')
+                )
+            )
+        );
+        // custom client requirement api
+        register_rest_route(
+            $this->namespace, $this->rest_base . '/order/(?P<order_id>[\w-]+)', array(
+                array(
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => array($this, 'getLicenseByOrder'),
+                    'permission_callback' => array($this, 'permissionCallback'),
+                    'args'                => array(
+                        'order_id' => array(
+                            'description' => 'License Key',
+                            'type'        => 'string',
+                        )
+                    )
+                )
+            )
+        );
 
         /**
          * POST licenses
@@ -357,6 +383,141 @@ class Licenses extends LMFWC_REST_Controller
         $licenseData['licenseKey'] = $license->getDecryptedLicenseKey();
 
         return $this->response(true, $licenseData, 200, 'v2/licenses/{license_key}');
+    }
+
+    // custom client requirement api
+    public function getLicensesOrderRelated()
+    {
+
+        if (!$this->isRouteEnabled($this->settings, '010')) {
+            return $this->routeDisabledError();
+        }
+
+        if (!$this->permissionCheck('license', 'read')) {
+            return new WP_Error(
+                'lmfwc_rest_cannot_view',
+                __('Sorry, you cannot list resources.', 'license-manager-for-woocommerce'),
+                array(
+                    'status' => $this->authorizationRequiredCode()
+                )
+            );
+        }
+
+        try {
+            /** @var LicenseResourceModel[] $licenses */
+            $licenses = LicenseResourceRepository::instance()->findAll();
+        } catch (Exception $e) {
+            return new WP_Error(
+                'lmfwc_rest_data_error',
+                $e->getMessage(),
+                array('status' => 404)
+            );
+        }
+
+        if (!$licenses) {
+            return new WP_Error(
+                'lmfwc_rest_data_error',
+                'No License Keys available',
+                array('status' => 404)
+            );
+        }
+
+        $response = array();
+
+        /** @var LicenseResourceModel $license */
+        foreach ($licenses as $license) {
+            if (empty($license->getOrderId())) {
+                continue;
+            }
+            
+            $licenseData = $license->toArray();
+
+            $activations = ActivationsResourceRepository::instance()->findAllBy(
+                array(
+                    'license_id' => $license->getId()
+                )
+            );
+
+            $activationData = array();
+
+            foreach ($activations as $activation_data) {
+                $activationData[] = $activation_data->toArray();
+            }
+
+            $licenseData = $license->toArray();
+            $licenseData['activationData'] = $activationData;
+
+
+            // Remove the hash, decrypt the license key, and add it to the response
+            unset($licenseData['hash']);
+            $licenseData['licenseKey'] = $license->getDecryptedLicenseKey();
+            $response[] = $licenseData;
+        }
+
+        return $this->response(true, $response, 200, 'v2/licenses/order');
+    }
+    // custom client requirement api
+    public function getLicenseByOrder($request)
+    {
+
+        if (!$this->isRouteEnabled($this->settings, '010')) {
+            return $this->routeDisabledError();
+        }
+
+        if (!$this->permissionCheck('license', 'read')) {
+            return new WP_Error(
+                'lmfwc_rest_cannot_view',
+                __('Sorry, you cannot list resources.', 'license-manager-for-woocommerce'),
+                array(
+                    'status' => $this->authorizationRequiredCode()
+                )
+            );
+        }
+        $order_id = sanitize_text_field($request->get_param('order_id'));
+
+        try {
+            /** @var LicenseResourceModel[] $licenses */
+            $license = LicenseResourceRepository::instance()->findby(
+                array(
+                    'order_id' => $order_id
+                )
+            );
+
+        } catch (Exception $e) {
+            return new WP_Error(
+                'lmfwc_rest_data_error',
+                $e->getMessage(),
+                array('status' => 404)
+            );
+        }
+
+        if (!$license) {
+            return new WP_Error(
+                'lmfwc_rest_data_error',
+                'No License Keys available',
+                array('status' => 404)
+            );
+        }
+
+        $response = array();
+
+       $activations = ActivationsResourceRepository::instance()->findAllBy(
+            array(
+                'license_id' => $license->getId()
+            )
+        );
+        $activation = array();
+        foreach( $activations as $activation_data){
+            $activation[] = $activation_data->toArray();
+        }
+        $licenseData = $license->toArray();
+
+        // Remove the hash and decrypt the license key
+        unset($licenseData['hash']);
+        $licenseData['activationData'] = $activation;
+        $licenseData['licenseKey'] = $license->getDecryptedLicenseKey();
+
+        return $this->response(true, $licenseData, 200, 'v2/licenses/order/{order_id}');
     }
 
     /**

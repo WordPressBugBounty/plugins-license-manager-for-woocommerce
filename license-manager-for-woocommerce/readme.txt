@@ -1,21 +1,43 @@
 ﻿=== License Manager for WooCommerce ===
 Contributors: wpexpertsio
-Tags: license key, license, key, software license, serial key, manager, woocommerce, wordpress
+Tags: license key, license manager, woocommerce, software license, serial key, manager, woocommerce, wordpress
 Requires at least: 4.7
-Tested up to: 6.8
-Stable tag: 3.0.12
+Tested up to: 6.9
+Stable tag: 3.0.15
+Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Easily sell and manage software license keys through your WooCommerce shop
 
 == Description ==
-The **[License Manager for WooCommerce](https://licensemanager.at/)** allows you to easily sell and manage all of your digital license keys. With features like the bulk importer, automatic delivery, automatic stock management, and database encryption, your shop will now run easier than ever.
+Running a digital store on WooCommerce? **[License Manager for WooCommerce](https://licensemanager.at/?utm_source=wp_org&utm_medium=readme&utm_campaign=title)** gives you everything you need to sell and manage automation license manager keys securely. 
+From automatic license generation and instant email delivery to encrypted storage and powerful REST API endpoints, this automation for WooCommerce plugin streamlines license management for WordPress developers, software vendors, and digital product shops. 
+The License Manager for WooCommerce allows you to easily sell and manage all of your digital license keys. With features like the bulk importer, automatic delivery, automatic stock management, and database encryption, your shop will now run easier than ever.
 
-[Plugin & API Documentation](https://www.licensemanager.at/docs)
 
-#### Key features
+**[🚀 Go Pro](https://licensemanager.at/pricing/)** | **[💻 Live Demo](https://tastewp.com/create/NMS/8.4/latest_wp/license-manager-for-woocommerce%2Cwoocommerce/tastewp-default/?redirect=admin.php%3Fpage=wc-settings%26tab=lmfwc_settings&ni=true)** | **[📘  Documentation](https://licensemanager.at/docs/?utm_source=wp_org&utm_medium=readme&utm_campaign=documentation)** | **[💬 Support](https://licensemanager.at/get-in-touch/?utm_source=wp_org&utm_medium=readme&utm_campaign=contact_us)**
 
+[youtube https://www.youtube.com/watch?v=E_GWMqzYLcs]
+
+#### Who WooCommerce License Manager is For
+This automation license manager is for:
+
+* WordPress plugin and theme developers
+* SaaS providers selling subscription-based software
+* Digital product stores needing license verification
+* Agencies distributing client licenses
+
+#### Key Features of License Manager for WooCommerce 
+* Automated License Delivery – Generate and send autoation for WooCommerce keys instantly after checkout.
+* Secure Storage – License keys are encrypted and protected inside WordPress.
+* Stock Control – Track, assign, and update license availability automatically.
+* REST API Integration – Validate, activate, or revoke licenses directly via API.
+* Customer Dashboard – Buyers can manage activations and view license details in My Account.
+* Bulk Tools – Import, export, and generate licenses in a few clicks.
+
+
+#### Highlights of Licence Manager for WooCommerce
 * Display the license keys section inside WooCommerce ‘s My Account Page
 * Allow users to activate/deactivate their license keys
 * Allow users to download license certificates 
@@ -46,10 +68,49 @@ License Manager for WooCommerce Pro allows you to enhance the capabilities for y
 * **Ping Request** - Create a ping request to check the client-server connection.
 * **New License Key Upon Subscription renewal** - Issue a new license key upon each subscription renewal.
 * **Extend License Key Upon Subscription** - Extend the existing license key with each subscription renewal.
+* **Webhooks Integration** - Automate external actions with real-time event-based license triggers.
+* **QR Code Activation** - Simplify activation with scannable license QR codes for instant access.
 View License Manager for WooCommerce Pro [pricing plans](https://www.licensemanager.at/pricing/).
 
-#### API
+== Feature Breakdown of WooCommerce License Manager ==
 
+####License Management & Delivery
+* Assign a WooCommerce license key to any digital product.
+* Automatically generate licenses during checkout using built-in key generators.
+* Deliver licenses instantly by email and within the customer’s WooCommerce account.
+* Re-issue or revoke licenses directly from the admin dashboard.
+
+#### Security & Compliance 
+* Keys are stored with encryption — no plain-text exposure.
+* Admin can hide or partially mask keys for added privacy.
+* Built-in cryptographic files secure license operations and the automation license manager, ensuring your software license manager stays reliable.
+
+#### REST API & Integrations 
+* Validate, activate, or deactivate licenses via the REST API.
+* Connect your apps, plugins, or external services to WooCommerce for license verification.
+* API supports license checks, ping requests, and expiry validation for complete control.
+
+####Stock & Reporting Tools 
+* Track license inventory across products in real time.
+* Bulk import or export keys with CSV for fast migration.
+* Generate custom license certificates with branding and customer details.
+* View activation history and logs to keep your WooCommerce software license process transparent.
+
+####Upgrade to License Manager Pro
+* Automation for WooCommerce License Manager Pro extends functionality with advanced controls.
+* Features include versioning & changelogs, subscription renewal support, license validation by customer ID, and advanced reporting.
+* Ideal for scaling stores needing enterprise-level WooCommerce license manager capabilities.
+
+= Compatibility and Requirements of This License Key Management Software =
+* Fully compatible with WooCommerce license manager workflows for digital products.
+* This automation license manager plugin works with the latest WordPress and WooCommerce versions (tested up to current release).
+* Requires WordPress 5.0+ and WooCommerce 5.0+ for stable performance.
+* Lightweight codebase built for speed, security, and scalability.
+* Trusted by 7,000+ active installs as a reliable software license manager for WordPress.
+* Regular updates and dedicated support ensure long-term reliability.
+* Backward compatible with Digital License Manager for smooth migration.
+
+#### API
 The plugin also offers additional endpoints for manipulating licenses and generator resources. These routes are authorized via API keys (generated through the plugin settings) and accessed via the WordPress API. An extensive [API documentation](https://www.licensemanager.at/docs/rest-api/getting-started/api-keys) is also available.
 
 #### Need help?
@@ -62,7 +123,7 @@ You can also check out the documentation pages, as they contain the most essenti
 
 The plugin will create two files inside the `wp-content/uploads/lmfwc-files` folder. These files (`defuse.txt` and `secret.txt`) contain cryptographic secrets which are automatically generated if they don't exist. These cryptographic secrets are used to encrypt, decrypt and hash your license keys. Once they are generated please **back them up somewhere safe**. In case you lose these two files your encrypted license keys inside the database will remain forever lost!
 
-If you would like to contribute to any of these [libraries](https://www.licensemanager.at/docs/rest-api/libraries/nodejs) in these languages (Node.js, Python, PHP, Ruby, .NET, C, C#, C++, and Golang), please visit our library page for more details.
+If you would like to contribute to any of these [libraries](https://www.licensemanager.at/docs/rest-api/libraries/node-js) in these languages (Node.js, Python, PHP, Ruby, .NET, C, C#, C++, and Golang), please visit our library page for more details.
 
 #### Note
 
@@ -111,7 +172,11 @@ Of course! The plugin comes with REST API routes which allow you to activate, de
 
 = Does this License Management plugin work with subscription products? =
 
-Yes, our license manager plugin supports subscription products and is compatible with the WooCommerce Subscriptions plugin.== Screenshots ==
+Yes, our license manager plugin supports subscription products and is compatible with the WooCommerce Subscriptions plugin.
+
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/9e5fb79a-9a62-432d-99c9-e1c14994ec03)
 
 == Screenshots ==
 1. The license key overview page.
@@ -124,6 +189,15 @@ Yes, our license manager plugin supports subscription products and is compatible
 8. REST API
 
 == Changelog ==
+
+##### 3.0.15 - 2025-12-08
+- Tweak - Update UI/UX improvement
+
+##### 3.0.14 - 2025-11-20
+- Tweak - Code improvement 
+
+##### 3.0.13 - 2025-07-23
+- Improved - Enhanced plugin security
 
 ##### 3.0.12 - 2025-04-15
 - Tweak - Tested Upto WordPress Latest Version 6.8

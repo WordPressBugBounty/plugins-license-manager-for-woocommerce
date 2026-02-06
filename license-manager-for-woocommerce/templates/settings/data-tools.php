@@ -3,6 +3,7 @@
  * Some of the code written, maintained by Darko Gjorgjijoski
  */
 ?>
+<div class="lmfwc-tool-form-container">
 <h3><?php esc_html_e( 'Database Migration', 'license-manager-for-woocommerce' ); ?></h3>
 <p><?php esc_html_e( 'This is one-click migration tool that makes it possible to migrate from other plugins easily. Please take database backups before starting this operation.', 'license-manager-for-woocommerce' ); ?></p>
 <form class="lmfwc-tool-form" id="lmfwc-migrate-tool" method="POST">
@@ -82,5 +83,6 @@
                     </td>
                 </tr>
             </tbody>
-     
+     </table>
 </form>
+</div>
