@@ -471,7 +471,15 @@ class Generators extends LMFWC_REST_Controller
             return $this->routeDisabledError();
         }
 
-     
+        if (!$this->permissionCheck('generator', 'delete')) {
+            return new WP_Error(
+                'lmfwc_rest_cannot_delete',
+                __('Sorry, you are not allowed to delete resources.', 'license-manager-for-woocommerce'),
+                array(
+                    'status' => $this->authorizationRequiredCode()
+                )
+            );
+        }
 
       $urlParams = $request->get_url_params();
         $generator_id = isset( $urlParams['generator_id'] ) ? sanitize_text_field( $urlParams['generator_id'] ) : '';

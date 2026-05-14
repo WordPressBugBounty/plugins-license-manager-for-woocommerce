@@ -121,10 +121,20 @@ class RestController extends WP_REST_Controller
      */
     public function permissionCallback($request)
     {
-        $error = apply_filters('lmfwc_rest_permission_callback', $request);
+        $filtered = apply_filters('lmfwc_rest_permission_callback', $request);
 
-        if ($error instanceof WP_Error) {
-            return $error;
+        if ($filtered instanceof WP_Error) {
+            return $filtered;
+        } elseif (is_bool($filtered)) {
+            return $filtered;
+        }
+
+        if (!current_user_can('manage_options')) {
+            return new WP_Error(
+                'lmfwc_rest_forbidden',
+                __('Sorry, you are not allowed to access this resource.', 'license-manager-for-woocommerce'),
+                array('status' => $this->authorizationRequiredCode())
+            );
         }
 
         return true;

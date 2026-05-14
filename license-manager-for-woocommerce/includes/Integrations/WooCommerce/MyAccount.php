@@ -207,19 +207,30 @@ class MyAccount
 
         if(  !$licenseID ) {
             $licenseKeys = apply_filters('lmfwc_get_all_customer_license_keys', $user_id);
-            echo wp_kses(
-                wc_get_template_html(
-                    'myaccount/lmfwc-view-license-keys.php',
-                    array(
-                        'dateFormat'  => get_option('date_format'),
-                        'licenseKeys' => $licenseKeys,
-                        'page'        => $page
-                    ),
-                    '',
-                    LMFWC_TEMPLATES_DIR
+            // echo wp_kses(
+            //     wc_get_template_html(
+            //         'myaccount/lmfwc-view-license-keys.php',
+            //         array(
+            //             'dateFormat'  => get_option('date_format'),
+            //             'licenseKeys' => $licenseKeys,
+            //             'page'        => $page
+            //         ),
+            //         '',
+            //         LMFWC_TEMPLATES_DIR
+            //     ),
+            //     lmfwc_shapeSpace_allowed_html()
+            // );
+            wc_get_template(
+                'myaccount/lmfwc-view-license-keys.php',
+                array(
+                    'dateFormat'  => get_option('date_format'),
+                    'licenseKeys' => $licenseKeys,
+                    'page'        => $page,
                 ),
-                lmfwc_shapeSpace_allowed_html()
+                '',
+                LMFWC_TEMPLATES_DIR
             );
+
         } 
         
         else {

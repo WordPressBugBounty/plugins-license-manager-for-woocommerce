@@ -2,8 +2,8 @@
 Contributors: wpexpertsio
 Tags: license key, license manager, woocommerce, software license, serial key, manager, woocommerce, wordpress
 Requires at least: 4.7
-Tested up to: 6.9
-Stable tag: 3.0.15
+Tested up to: 7.0
+Stable tag: 3.0.16
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -11,113 +11,111 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Easily sell and manage software license keys through your WooCommerce shop
 
 == Description ==
-Running a digital store on WooCommerce? **[License Manager for WooCommerce](https://licensemanager.at/?utm_source=wp_org&utm_medium=readme&utm_campaign=title)** gives you everything you need to sell and manage automation license manager keys securely. 
-From automatic license generation and instant email delivery to encrypted storage and powerful REST API endpoints, this automation for WooCommerce plugin streamlines license management for WordPress developers, software vendors, and digital product shops. 
-The License Manager for WooCommerce allows you to easily sell and manage all of your digital license keys. With features like the bulk importer, automatic delivery, automatic stock management, and database encryption, your shop will now run easier than ever.
+Running a digital store on WooCommerce? **[License Manager for WooCommerce](https://licensemanager.at/?utm_source=wp_org&utm_medium=readme&utm_campaign=title)** gives you everything you need to sell and manage software license keys and digital licenses, including a serial key and software license, securely.
+From automatic license key generation and instant email delivery to encrypted storage and powerful REST API endpoints, this WooCommerce automation plugin acts as a complete key manager and license management system. It streamlines software license management for WordPress developers, SaaS vendors, and digital product shops requiring software license keys.
+The License Manager for WooCommerce allows you to easily sell and manage all of your digital license keys, serial key inventories, and software license records from one centralized license management dashboard.
+With features like the bulk importer, automatic license delivery, automatic stock management, and database encryption, your shop can handle every key, software license, and digital license more efficiently than ever.
 
-
-**[🚀 Go Pro](https://licensemanager.at/pricing/)** | **[💻 Live Demo](https://tastewp.com/create/NMS/8.4/latest_wp/license-manager-for-woocommerce%2Cwoocommerce/tastewp-default/?redirect=admin.php%3Fpage=wc-settings%26tab=lmfwc_settings&ni=true)** | **[📘  Documentation](https://licensemanager.at/docs/?utm_source=wp_org&utm_medium=readme&utm_campaign=documentation)** | **[💬 Support](https://licensemanager.at/get-in-touch/?utm_source=wp_org&utm_medium=readme&utm_campaign=contact_us)**
+**[🚀 Go Pro](https://licensemanager.at/pricing/?utm_source=wp_org&utm_medium=readme&utm_campaign=go_pro)** | **[💻 Live Demo](https://tastewp.com/create/NMS/8.4/latest_wp/license-manager-for-woocommerce%2Cwoocommerce/tastewp-default/?redirect=admin.php%3Fpage=wc-settings%26tab=lmfwc_settings&ni=true)** | **[📘  Documentation](https://licensemanager.at/docs/?utm_source=wp_org&utm_medium=readme&utm_campaign=documentation)** | **[💬 Support](https://licensemanager.at/get-in-touch/?utm_source=wp_org&utm_medium=readme&utm_campaign=contact_us)**
 
 [youtube https://www.youtube.com/watch?v=E_GWMqzYLcs]
-
 #### Who WooCommerce License Manager is For
-This automation license manager is for:
+This automation license management plugin is for:
+* WordPress plugin and theme developers who need a secure license key or serial key system 
+* SaaS providers selling subscription-based software license products 
+* Digital product stores needing secure license delivery and serial key verification 
+* Agencies distributing client licenses using a centralized key manager
 
-* WordPress plugin and theme developers
-* SaaS providers selling subscription-based software
-* Digital product stores needing license verification
-* Agencies distributing client licenses
+#### Key Features of License Manager for WooCommerce
+* Automated License Delivery – Generate and send WooCommerce digital license keys and serial key access instantly after checkout.
+* Secure Storage – Every license key and software license record is encrypted and protected inside WordPress.
+* Stock Control – Track, assign, and update license key availability automatically with built-in key manager functionality.
+* REST API Integration – Validate, activate, or revoke licenses, software license keys, and serial key activations directly via API.
+* Customer Dashboard – Buyers can manage activations, view software license details, and monitor serial key usage inside My Account.
+* Bulk Tools – Import, export, and generate license and serial key batches in a few clicks.
 
-#### Key Features of License Manager for WooCommerce 
-* Automated License Delivery – Generate and send autoation for WooCommerce keys instantly after checkout.
-* Secure Storage – License keys are encrypted and protected inside WordPress.
-* Stock Control – Track, assign, and update license availability automatically.
-* REST API Integration – Validate, activate, or revoke licenses directly via API.
-* Customer Dashboard – Buyers can manage activations and view license details in My Account.
-* Bulk Tools – Import, export, and generate licenses in a few clicks.
+#### Highlights of License Manager for WooCommerce
+* Display the license keys and serial key section inside WooCommerce ‘s My Account Page
+* Allow users to activate/deactivate their software license keys
+* Allow users to download software license certificates
+* Admins can add a company logo on a software license certificate
+* Admins can do a one-click migration of the license key from Digital License Manager or any existing key manager
+* Admin can generate licenses and serial key entries for all past orders
+* Automatically sell and deliver software license keys through WooCommerce
+* Automatically manage the stock for licensed products and serial key inventory
+* Activate, deactivate, and check your software license status through the REST API
+* Manually resend license keys and serial key delivery emails
+* Add and import software license keys and assign them to WooCommerce products
+* All licenses and serial key data are encrypted to prevent unauthorized use
+* Administrators can activate or deactivate user accounts tied to a software license
+* Allows users to add duplicate license keys or serial key entries into the database
+* The order status tab provides software license and serial key delivery settings
+* Import license key and serial key batches by file upload
+* Export license key and software license records as PDF or CSV
+* Manage the status of your license keys, software license lifecycle, and serial key usage
+* Create license key generators with custom parameters to produce unique software license and serial key combinations
+* Assign a generator to one or more WooCommerce products; these products then automatically create a software license key and serial key whenever they are sold
 
+= License Manager for WooCommerce Pro =
+License Manager for WooCommerce Pro allows you to enhance the capabilities for your eCommerce website with advanced license management, software license, and key manager features:
 
-#### Highlights of Licence Manager for WooCommerce
-* Display the license keys section inside WooCommerce ‘s My Account Page
-* Allow users to activate/deactivate their license keys
-* Allow users to download license certificates 
-* Admins can add a company logo on a license certificate
-* Admins can do a one-click migration of the License Key from the Digital License Manager
-* Admin can generate licenses for all past orders
-* Automatically sell and deliver license keys through WooCommerce.
-* Automatically manage the stock for licensed products.
-* Activate, deactivate, and check your licenses through the REST API.
-* Manually resend license keys.
-* Add and import license keys and assign them to WooCommerce products.
-* All licenses are encrypted to prevent unauthorized use.
-* Administrators can activate or deactivate user accounts.
-* Allows users to add duplicate license keys into the database.
-* The order status tab provides license key delivery settings.
-* Import license keys by file upload.
-* Export license keys as PDF or CSV. 
-* Manage the status of your license keys.
-* Create license key generators with custom parameters.
-* Assign a generator to one (or more!) WooCommerce product(s), these products then automatically create a license key whenever they are sold.
+* **Download Expires** – Download expired products and generate new software license keys and serial key entries.
+* **Product Download Detail** – Enter a change log and product version from the settings tied to each software license.
+* **Validate Customer Licenses** – Validate customer software license access using their ID or assigned serial key.
+* **Ping Request** – Create a ping request to check the client-server connection and confirm software license validity.
+* **New License Key Upon Subscription Renewal** – Issue a new software license key and serial key upon each subscription renewal.
+* **Extend License Key Upon Subscription** – Extend the existing software license and associated serial key with each subscription renewal.
+* **Webhooks Integration** – Automate external actions with real-time event-based software license and serial key triggers.
+* **QR Code Activation** – Simplify activation with scannable license QR codes linked to each software license and serial key for instant access.
 
-= License Manager for WooCommerce Pro = 
-License Manager for WooCommerce Pro allows you to enhance the capabilities for your eCommerce website with features like:
-
-* **Download Expires** - Download expired products and generates new license keys.
-* **Product Download Detail** - Enters a change log and product version from the settings.
-* **Validate Customer Licenses** - Validate customer licenses using their ID.
-* **Ping Request** - Create a ping request to check the client-server connection.
-* **New License Key Upon Subscription renewal** - Issue a new license key upon each subscription renewal.
-* **Extend License Key Upon Subscription** - Extend the existing license key with each subscription renewal.
-* **Webhooks Integration** - Automate external actions with real-time event-based license triggers.
-* **QR Code Activation** - Simplify activation with scannable license QR codes for instant access.
-View License Manager for WooCommerce Pro [pricing plans](https://www.licensemanager.at/pricing/).
+View License Manager for WooCommerce Pro **[pricing plans](https://www.licensemanager.at/pricing/)**.
 
 == Feature Breakdown of WooCommerce License Manager ==
 
-####License Management & Delivery
-* Assign a WooCommerce license key to any digital product.
-* Automatically generate licenses during checkout using built-in key generators.
-* Deliver licenses instantly by email and within the customer’s WooCommerce account.
-* Re-issue or revoke licenses directly from the admin dashboard.
+#### License Key Management & Delivery 
+* Assign a WooCommerce license key or serial key to any digital product as part of your software license management workflow.
+* Automatically generate licenses during checkout using built-in key manager generators.
+* Deliver licenses, software license credentials, and serial key access instantly by email and within the customer’s WooCommerce account.
+* Re-issue or revoke licenses and serial key access directly from the admin dashboard using the integrated key manager.
 
 #### Security & Compliance 
-* Keys are stored with encryption — no plain-text exposure.
-* Admin can hide or partially mask keys for added privacy.
-* Built-in cryptographic files secure license operations and the automation license manager, ensuring your software license manager stays reliable.
+* Keys and serial key data are stored with encryption. No plain-text exposure of any software license.
+* Admin can hide or partially mask serial key values for additional software license privacy.
+* Built-in cryptographic files secure license operations and the automation license management system, ensuring your software license manager and key manager remain reliable.
 
-#### REST API & Integrations 
-* Validate, activate, or deactivate licenses via the REST API.
-* Connect your apps, plugins, or external services to WooCommerce for license verification.
-* API supports license checks, ping requests, and expiry validation for complete control.
+#### REST API & Integrations
+* Validate, activate, or deactivate licenses and serial key activations via the REST API.
+* Connect your apps, plugins, or external services to WooCommerce for software license and serial key verification.
+* API supports license checks, ping requests, serial key validation, and software license expiry validation for complete control.
 
-####Stock & Reporting Tools 
-* Track license inventory across products in real time.
-* Bulk import or export keys with CSV for fast migration.
-* Generate custom license certificates with branding and customer details.
-* View activation history and logs to keep your WooCommerce software license process transparent.
+#### Stock & Reporting Tools 
+* Track license key inventory and serial key usage across products in real time with the built-in key manager.
+* Bulk import or export keys and serial key records with CSV for fast software license migration.
+* Generate custom license certificates tied to each software license and serial key, including branding and customer details.
+* View activation history and logs to keep your WooCommerce software license and serial key workflow transparent.
 
-####Upgrade to License Manager Pro
-* Automation for WooCommerce License Manager Pro extends functionality with advanced controls.
-* Features include versioning & changelogs, subscription renewal support, license validation by customer ID, and advanced reporting.
-* Ideal for scaling stores needing enterprise-level WooCommerce license manager capabilities.
+#### Upgrade to License Manager Pro 
+* Automation for WooCommerce License Manager Pro extends functionality with advanced software license, serial key, and key manager controls.
+* Features include versioning and changelogs, subscription renewal support, software license validation by customer ID, and advanced reporting.
+* Ideal for scaling stores needing enterprise-level WooCommerce license management and key manager capabilities for handling large software license and serial key volumes.
 
 = Compatibility and Requirements of This License Key Management Software =
-* Fully compatible with WooCommerce license manager workflows for digital products.
-* This automation license manager plugin works with the latest WordPress and WooCommerce versions (tested up to current release).
-* Requires WordPress 5.0+ and WooCommerce 5.0+ for stable performance.
-* Lightweight codebase built for speed, security, and scalability.
-* Trusted by 7,000+ active installs as a reliable software license manager for WordPress.
-* Regular updates and dedicated support ensure long-term reliability.
-* Backward compatible with Digital License Manager for smooth migration.
+* Fully compatible with WooCommerce license management workflows for managing software license keys and serial key delivery for digital products.
+* This automation license management plugin works with the latest WordPress and WooCommerce versions (tested up to current release) and supports centralized key manager operations.
+* Requires WordPress 5.0+ and WooCommerce 5.0+ for stable software license and serial key management performance.
+* Lightweight codebase built for speed, security, and scalable license management and key manager operations.
+* Trusted by 6,000+ active installs as a reliable software license manager and key manager for WordPress.
+* Regular updates and dedicated support ensure long-term software license and serial key reliability.
+* Backward compatible with Digital License Manager for smooth migration of existing software license and serial key records.
 
-#### API
-The plugin also offers additional endpoints for manipulating licenses and generator resources. These routes are authorized via API keys (generated through the plugin settings) and accessed via the WordPress API. An extensive [API documentation](https://www.licensemanager.at/docs/rest-api/getting-started/api-keys) is also available.
+#### API For License Key Management 
+The plugin also offers additional endpoints for manipulating licenses, software license records, generator resources, and serial key assignments. These routes are authorized via API keys (generated through the plugin settings) and accessed via the WordPress API using the built-in WooCommerce license key manager infrastructure. An extensive **[API documentation](https://www.licensemanager.at/docs/rest-api/getting-started/api-keys)** is also available.
 
-#### Need help?
+#### Need help? 
+If you have any feature requests, need more hooks, or have even found a bug related to your software license, serial key, or key manager, please let us know in the support forum or e-mail us at support@wpexperts.io. 
 
-If you have any feature requests, need more hooks, or maybe have even found a bug, please let us know in the support forum or e-mail us at <support@wpexperts.io>. We look forward to hearing from you!
+You can also check out the **[documentation](https://www.licensemanager.at/docs/)**, which contains the most essential information on what the plugin can do to manage your software license, serial key, and complete key manager workflow.
 
-You can also check out the documentation pages, as they contain the most essential information on what the plugin can do for you.
 
 #### Important
 
@@ -189,6 +187,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 8. REST API
 
 == Changelog ==
+##### 3.0.16 - 2026-05-14
+- Improved - Enhanced plugin security and stability.
 
 ##### 3.0.15 - 2025-12-08
 - Tweak - Update UI/UX improvement

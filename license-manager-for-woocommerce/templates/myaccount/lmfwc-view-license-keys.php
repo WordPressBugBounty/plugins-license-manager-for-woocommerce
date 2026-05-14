@@ -37,7 +37,7 @@ if ( ! empty( $licenseKeys ) ): ?>
     <h3 class="product-name">
         <?php if ($product): ?>
             <a href="<?php echo esc_url(get_post_permalink($productId)); ?>">
-                <span><?php echo esc_html($licenseKeyData['name']); ?></span>
+                <span><?php echo $licenseKeyData['name']; ?></span>
             </a>
         <?php else: ?>
             <span><?php echo esc_html(__('Product', 'license-manager-for-woocommerce') . ' #' . $productId); ?></span>

@@ -1,3 +1,9 @@
+##### 3.0.16 - 2026-05-14
+- Improved - Enhanced plugin security and stability.
+
+##### 3.0.15 - 2025-12-08
+- Tweak - Update UI/UX improvement
+
 ##### 3.0.14 - 2025-11-20
 - Tweak - Code improvement 
 
