@@ -1,3 +1,6 @@
+##### 3.0.17 - 2026-05-21
+- Tweak – Compatible with WordPress Version 7.0
+
 ##### 3.0.16 - 2026-05-14
 - Improved - Enhanced plugin security and stability.
 
