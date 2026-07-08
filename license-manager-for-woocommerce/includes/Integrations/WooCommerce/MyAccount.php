@@ -30,89 +30,180 @@ class MyAccount
     public function handleCustomActions() {
 
         $user = wp_get_current_user();
-        if (!$user) {
+        if ( ! $user || ! $user->ID ) {
             return;
         }
 
-        $action    = isset( $_POST['lmfwc_action'] ) ? sanitize_text_field( $_POST['lmfwc_action'] ) : '';
-        if (array_key_exists('action', $_POST)) {
-            $licenseKey =  isset( $_POST['license'] )  ? sanitize_text_field( $_POST['license']) : '';
+        if ( ! array_key_exists( 'action', $_POST ) ) {
+            return;
+        }
 
-            if ($_POST['action'] === 'activate' && Settings::get('lmfwc_allow_users_to_activate' , Settings::SECTION_WOOCOMMERCE)) {
-                $nonce = wp_verify_nonce($_POST['_wpnonce'], 'lmfwc_myaccount_activate_license');
-                if ($nonce) {
-                    $args = array();
-                    $args['source'] = ActivationProcessor::WEB;
-                    $activate = lmfwc_activate_license($licenseKey,$args);
-                    if( is_wp_error ( $activate ) ){
-                        wc_add_notice(__('License Key is Expired .' , 'license-manager-for-woocommerce'), 'error');
-                    }
+        $action     = sanitize_text_field( wp_unslash( $_POST['action'] ) );
+        $licenseKey = isset( $_POST['license'] ) ? sanitize_text_field( wp_unslash( $_POST['license'] ) ) : '';
 
-                }
-            }
-
-
-
-            if ($_POST['action'] === 'deactivate' && Settings::get('lmfwc_allow_users_to_deactivate' , Settings::SECTION_WOOCOMMERCE)) {
-                $token      = $_POST['token'];
-                $optional = '';
-                $args = array( 
-                     'token' => $token 
-                );
-                $nonce = wp_verify_nonce($_POST['_wpnonce'],'lmfwc_myaccount_deactivate_license');
-                if ($nonce) {
-                    try {
-                        lmfwc_deactivate_license( $optional, $args);
-                    }
-                    catch (Exception $e) {
-                    }
-                }
-            }
-
-            if ($_POST['action'] === 'reactivate') {
-
-                $token      = $_POST['token'];
-                $nonce = wp_verify_nonce($_POST['_wpnonce'],'lmfwc_myaccount_reactivate_license');
-
-                if ($nonce) {
-                    try {
-                        $reactivation = lmfwc_reactivate_license($token);
-                        if( is_wp_error ( $reactivation ) ){
-
-                            wc_add_notice(__('License Key is Expired Cannot be Reactivate. ' , 'license-manager-for-woocommerce'), 'error');
-                        }
-                    }
-                    catch (Exception $e) {
-                    }
-                }
-            }
-            
-            if ($_POST['action'] === 'delete') {
-
-               $activation_id = isset($_POST['activation_id']) ? $_POST['activation_id'] : '';
-               $license_id = isset($_POST['license_id']) ? $_POST['license_id'] : '';
-
-               $nonce = wp_verify_nonce($_POST['_wpnonce'],'lmfwc_myaccount_delete_license');
-
-               if ($nonce) {
-                try {
-                    lmfwc_delete_activation($activation_id, $license_id);
-                }
-                catch (Exception $e) {
+        if ( $action === 'activate' && Settings::get( 'lmfwc_allow_users_to_activate', Settings::SECTION_WOOCOMMERCE ) ) {
+            $nonce = wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'lmfwc_myaccount_activate_license' );
+            if ( $nonce && $this->userOwnsLicenseKey( $licenseKey ) ) {
+                $args           = array();
+                $args['source'] = ActivationProcessor::WEB;
+                $activate       = lmfwc_activate_license( $licenseKey, $args );
+                if ( is_wp_error( $activate ) ) {
+                    wc_add_notice( __( 'License Key is Expired .', 'license-manager-for-woocommerce' ), 'error' );
                 }
             }
         }
 
-        if ($_POST['action'] === 'lmfwc_download_license_pdf' && Settings::get('lmfwc_download_certificates' , Settings::SECTION_WOOCOMMERCE)) {
+        if ( $action === 'deactivate' && Settings::get( 'lmfwc_allow_users_to_deactivate', Settings::SECTION_WOOCOMMERCE ) ) {
+            $token = isset( $_POST['token'] ) ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : '';
+            $args  = array(
+                'token' => $token,
+            );
+            $nonce = wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'lmfwc_myaccount_deactivate_license' );
+            if ( $nonce && $this->userOwnsActivationToken( $token ) ) {
+                try {
+                    lmfwc_deactivate_license( '', $args );
+                } catch ( Exception $e ) {
+                }
+            }
+        }
 
-            $nonce = wp_verify_nonce($_POST['_wpnonce'],'lmfwc_myaccount_download_certificates');
+        if ( $action === 'reactivate' ) {
+            $token = isset( $_POST['token'] ) ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : '';
+            $nonce = wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'lmfwc_myaccount_reactivate_license' );
 
-            if ($nonce) {
-                $this->lmfwcGeneratePDFCertificate($licenseKey);
+            if ( $nonce && $this->userOwnsActivationToken( $token ) ) {
+                try {
+                    $reactivation = lmfwc_reactivate_license( $token );
+                    if ( is_wp_error( $reactivation ) ) {
+                        wc_add_notice( __( 'License Key is Expired Cannot be Reactivate. ', 'license-manager-for-woocommerce' ), 'error' );
+                    }
+                } catch ( Exception $e ) {
+                }
+            }
+        }
+
+        if ( $action === 'delete' ) {
+            $activation_id = isset( $_POST['activation_id'] ) ? absint( $_POST['activation_id'] ) : 0;
+            $license_id    = isset( $_POST['license_id'] ) ? absint( $_POST['license_id'] ) : 0;
+            $nonce         = wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'lmfwc_myaccount_delete_license' );
+
+            if ( $nonce && $this->userOwnsActivation( $activation_id, $license_id ) ) {
+                try {
+                    lmfwc_delete_activation( $activation_id, $license_id );
+                } catch ( Exception $e ) {
+                }
+            }
+        }
+
+        if ( $action === 'lmfwc_download_license_pdf' && Settings::get( 'lmfwc_download_certificates', Settings::SECTION_WOOCOMMERCE ) ) {
+            $nonce = wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'lmfwc_myaccount_download_certificates' );
+
+            if ( $nonce ) {
+                $this->lmfwcGeneratePDFCertificate( $licenseKey );
             }
         }
     }
-}
+
+    /**
+     * @param mixed $license
+     *
+     * @return bool
+     */
+    private function userOwnsLicense( $license ) {
+        if ( is_wp_error( $license ) || ! $license ) {
+            return false;
+        }
+
+        return (int) $license->getUserId() === get_current_user_id();
+    }
+
+    /**
+     * @param string $licenseKey
+     *
+     * @return bool
+     */
+    private function userOwnsLicenseKey( $licenseKey ) {
+        if ( empty( $licenseKey ) ) {
+            return false;
+        }
+
+        try {
+            $license = LicenseResourceRepository::instance()->findBy(
+                array(
+                    'hash' => apply_filters( 'lmfwc_hash', $licenseKey ),
+                )
+            );
+        } catch ( Exception $e ) {
+            return false;
+        }
+
+        return $this->userOwnsLicense( $license );
+    }
+
+    /**
+     * @param string $token
+     *
+     * @return bool
+     */
+    private function userOwnsActivationToken( $token ) {
+        if ( empty( $token ) ) {
+            return false;
+        }
+
+        try {
+            $activation = ActivationResourceRepository::instance()->findBy(
+                array(
+                    'token' => $token,
+                )
+            );
+        } catch ( Exception $e ) {
+            return false;
+        }
+
+        if ( ! $activation ) {
+            return false;
+        }
+
+        return $this->userOwnsLicense( $activation->getLicense() );
+    }
+
+    /**
+     * @param int $activation_id
+     * @param int $license_id
+     *
+     * @return bool
+     */
+    private function userOwnsActivation( $activation_id, $license_id ) {
+        if ( ! $activation_id || ! $license_id ) {
+            return false;
+        }
+
+        try {
+            $license = LicenseResourceRepository::instance()->findBy(
+                array(
+                    'id' => $license_id,
+                )
+            );
+        } catch ( Exception $e ) {
+            return false;
+        }
+
+        if ( ! $this->userOwnsLicense( $license ) ) {
+            return false;
+        }
+
+        try {
+            $activation = ActivationResourceRepository::instance()->findBy(
+                array(
+                    'id' => $activation_id,
+                )
+            );
+        } catch ( Exception $e ) {
+            return false;
+        }
+
+        return $activation && (int) $activation->getLicenseId() === $license_id;
+    }
 
         /**
      * Prints out the licenses activation table

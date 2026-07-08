@@ -1,3 +1,6 @@
+##### 3.0.18 - 2026-05-21
+- Tweak - Code improvement 
+
 ##### 3.0.17 - 2026-05-21
 - Tweak – Compatible with WordPress Version 7.0
 
