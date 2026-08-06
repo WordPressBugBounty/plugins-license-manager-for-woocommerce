@@ -298,12 +298,13 @@ abstract class ResourceRepository extends Singleton implements RepositoryInterfa
         $sqlQuery .= $wpdb->prepare(' updated_by = %d,', get_current_user_id());
 
         foreach ($data as $columnName => $value) {
+            $columnName = preg_replace('/[^a-zA-Z0-9_]/', '', $columnName);
             if (is_numeric($value)) {
-                $sqlQuery .= " {$columnName} = {$value},";
+                $sqlQuery .= $wpdb->prepare(" {$columnName} = %d,", $value);
             }
 
             elseif (is_string($value)) {
-                $sqlQuery .= " {$columnName} = '{$value}',";
+                $sqlQuery .= $wpdb->prepare(" {$columnName} = %s,", $value);
             }
 
             elseif ($value === null) {
@@ -439,9 +440,12 @@ abstract class ResourceRepository extends Singleton implements RepositoryInterfa
      */
     private function parseQueryConditions($query)
     {
+        global $wpdb;
         $result = '';
 
         foreach ($query as $columnName => $value) {
+
+            $columnName = preg_replace('/[^a-zA-Z0-9_]/', '', $columnName);
 
             if (is_array($value)) {
                 $valuesIn = implode(', ', array_map('absint', $value));
@@ -449,7 +453,7 @@ abstract class ResourceRepository extends Singleton implements RepositoryInterfa
             }
 
             elseif (is_string($value)) {
-                $result .= "AND {$columnName} = '{$value}' ";
+                $result .= $wpdb->prepare("AND {$columnName} = %s ", $value);
             }
 
             elseif (is_numeric($value)) {

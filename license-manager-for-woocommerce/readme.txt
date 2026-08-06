@@ -3,7 +3,7 @@ Contributors: wpexpertsio
 Tags: license key, license manager, woocommerce, software license, serial key, manager, woocommerce, wordpress
 Requires at least: 4.7
 Tested up to: 7.0
-Stable tag: 3.0.18
+Stable tag: 3.0.19
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -187,6 +187,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 8. REST API
 
 == Changelog ==
+
+##### 3.0.19 - 2026-08-06
+- Improved - Enhanced plugin security and stability.
+
 ##### 3.0.18 - 2026-06-30
 - Tweak - Code improvement
 

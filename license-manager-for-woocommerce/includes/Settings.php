@@ -123,11 +123,11 @@ class Settings
             $table4 = $wpdb->prefix . 'dlm_license_activations';
             $table5 = $wpdb->prefix . 'dlm_license_meta';
 
-            $licenses = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s', $table1 ), ARRAY_A );
+            $licenses = $wpdb->get_results( "SELECT * FROM {$table1}", ARRAY_A );
 
             foreach ( $licenses as $row ) {
                 $license_key = self::decrypt( $row['license_key'] );
-                $activationCount = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %1s where license_id = %d', $table4, $row['id'] ) );
+                $activationCount = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table4} where license_id = %d", $row['id'] ) );
                 $new_row_data = array(
                     'order_id'          => $row['order_id'],
                     'product_id'        => $row['product_id'],
@@ -152,7 +152,7 @@ class Settings
                 $new_row = LicenseResourceRepository::instance()->insert( $new_row_data );
 
                 if ( ! empty( $new_row ) ) {
-                $activations = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s where license_id = %d', $table4, $row['id'] ), ARRAY_A );
+                $activations = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table4} where license_id = %d", $row['id'] ), ARRAY_A );
 
                     if ( ! empty( $activations ) ) {
                         foreach ( $activations as $oldActivation ) {
@@ -166,7 +166,7 @@ class Settings
                             $new_activation = ActivationResourceRepository::instance()->insert( $oldActivation );
                         }
                     }
-                    $old_meta_rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s where license_id = %d', $table5, $row['id'] ), ARRAY_A );
+                    $old_meta_rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table5} where license_id = %d", $row['id'] ), ARRAY_A );
                     if ( ! empty( $old_meta_rows ) ) {
                         foreach ( $old_meta_rows as $old_meta_row ) {
                             $old_meta_row['license_id'] = $new_row->getId();
@@ -180,7 +180,7 @@ class Settings
                 }
             }
            //generators
-            $generators = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s', $table2 ), ARRAY_A );
+            $generators = $wpdb->get_results( "SELECT * FROM {$table2}", ARRAY_A );
             foreach ( $generators as $row ) {
                 $row['times_activated_max'] = $row['activations_limit'];
                 unset($row['activations_limit']);
@@ -191,7 +191,7 @@ class Settings
             }
 
             //apikeys
-             $apikeys = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s', $table3 ), ARRAY_A );
+             $apikeys = $wpdb->get_results( "SELECT * FROM {$table3}", ARRAY_A );
             foreach ( $apikeys as $row ) {
               
                 unset($row['endpoints']);

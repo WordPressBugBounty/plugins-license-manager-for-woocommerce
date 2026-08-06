@@ -137,7 +137,7 @@ class ActivationsList extends WP_List_Table {
 
 
 		$what = $count ? 'COUNT(*)' : " {$this->table}.*";
-		$sql  = esc_sql( "SELECT {$what} FROM {$this->table} INNER JOIN {$tblLicenses} ON {$tblLicenses}.id={$this->table}.license_id WHERE 1 = 1" );
+		$sql  = "SELECT {$what} FROM {$this->table} INNER JOIN {$tblLicenses} ON {$tblLicenses}.id={$this->table}.license_id WHERE 1 = 1";
 		
 		// Applies the view filter
 		if ( ! empty( $status ) || $this->isViewFilterActive() ) {
@@ -147,9 +147,9 @@ class ActivationsList extends WP_List_Table {
 			}
 
 			if ( 'inactive' === $status ) {
-				$sql .= esc_sql( ' AND ' . $this->table . '.deactivated_at IS NOT NULL' );
+				$sql .= ' AND ' . $this->table . '.deactivated_at IS NOT NULL';
 			} else {
-				$sql .= esc_sql( ' AND ' . $this->table . '.deactivated_at IS NULL' );
+				$sql .= ' AND ' . $this->table . '.deactivated_at IS NULL';
 			}
 
 		}
@@ -157,9 +157,8 @@ class ActivationsList extends WP_List_Table {
 		// Applies the search box filter
 		if ( array_key_exists( 's', $_REQUEST ) && ! empty( $_REQUEST['s'] ) ) {
 			$sql .= $wpdb->prepare(
-				' AND ( %1s.hash=%s OR %2s.label LIKE %s )', $tblLicenses,
+				" AND ( {$tblLicenses}.hash=%s OR {$this->table}.label LIKE %s )",
 				apply_filters('lmfwc_hash', sanitize_text_field( $_REQUEST['s'] ) ),
-				$this->table,
 				'%' . $wpdb->esc_like( sanitize_text_field( $_REQUEST['s'] ) ) . '%'
 			);
 			
@@ -168,12 +167,12 @@ class ActivationsList extends WP_List_Table {
 
 		// Applies the order filter
 		if ( isset( $_REQUEST['license-id'] ) && is_numeric( $_REQUEST['license-id'] ) ) {
-			$sql .= $wpdb->prepare( ' AND %1s.id=%d', $tblLicenses, (int) $_REQUEST['license-id'] );
+			$sql .= $wpdb->prepare( " AND {$tblLicenses}.id=%d", (int) $_REQUEST['license-id'] );
 		}
 
 		// Applies the order filter
 		if ( isset( $_REQUEST['license-source'] ) && is_numeric( $_REQUEST['license-source'] ) ) {
-			$sql .= $wpdb->prepare( ' AND %1s.source=%d', $this->table, (int) $_REQUEST['license-source'] );
+			$sql .= $wpdb->prepare( " AND {$this->table}.source=%d", (int) $_REQUEST['license-source'] );
 		}
 
 		$sql .= isset($_REQUEST['orderby']) && !empty(sanitize_sql_orderby($_REQUEST['orderby'])) ? ' ORDER BY ' . $this->table . '.' . sanitize_sql_orderby($_REQUEST['orderby'] ) : ' ORDER BY ' . $this->table . '.id';
@@ -193,7 +192,7 @@ class ActivationsList extends WP_List_Table {
 		global $wpdb;
 		$sql = $this->getRecordsQuery( $status, true );
 
-		return $wpdb->get_var( $wpdb->prepare('%1s', $sql) );
+		return $wpdb->get_var( $sql );
 	}
 	/**
 	 * Checkbox column.

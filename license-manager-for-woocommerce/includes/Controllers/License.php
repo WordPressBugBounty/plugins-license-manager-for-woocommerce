@@ -34,6 +34,11 @@ class License
      */
     public function importLicenseKeys()
     {
+        // Check if the current user has the required capability
+        if (!current_user_can('manage_woocommerce')) {
+            wp_die(esc_html__('Invalid request.', 'license-manager-for-woocommerce'));
+        }
+
         // Check the nonce.
         check_admin_referer('lmfwc_import_license_keys');
 
@@ -159,6 +164,11 @@ class License
      */
     public function addLicenseKey()
     {
+        // Check if the current user has the required capability
+        if (!current_user_can('manage_woocommerce')) {
+            wp_die(esc_html__('Invalid request.', 'license-manager-for-woocommerce'));
+        }
+
         // Check the nonce
         check_admin_referer('lmfwc_add_license_key');
 
@@ -249,6 +259,11 @@ class License
      */
     public function updateLicenseKey()
     {
+        // Check if the current user has the required capability
+        if (!current_user_can('manage_woocommerce')) {
+            wp_die(esc_html__('Invalid request.', 'license-manager-for-woocommerce'));
+        }
+
         // Check the nonce
         check_admin_referer('lmfwc_update_license_key');
 

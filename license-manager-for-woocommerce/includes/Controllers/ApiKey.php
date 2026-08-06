@@ -25,6 +25,11 @@ class ApiKey
      */
     public function apiKeyUpdate()
     {
+        // Check if the current user has the required capability
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('Invalid request.', 'license-manager-for-woocommerce'));
+        }
+
         // Check the nonce.
         check_admin_referer('lmfwc-api-key-update');
 
